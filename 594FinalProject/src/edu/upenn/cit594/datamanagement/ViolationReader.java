@@ -1,17 +1,15 @@
 package edu.upenn.cit594.datamanagement;
 
-import java.util.HashMap;
+
+import java.util.Map;
 
 
 
-public class ViolationReader implements CSVReader{
-	public HashMap<Integer, Integer> violationMap;
-	
-	
-	public HashMap<Integer, Integer> getViolationMap(){
-		return violationMap;
-		
-	}
-	
+public interface ViolationReader extends Reader{
+//	public HashMap<Integer, Integer> violationMap;
+//	
+//	
+@SuppressWarnings("rawtypes")
+public Map getViolationMap();
 
 }

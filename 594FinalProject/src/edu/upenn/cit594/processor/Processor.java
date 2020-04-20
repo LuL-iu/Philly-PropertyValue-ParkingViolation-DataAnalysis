@@ -21,7 +21,7 @@ public class Processor {
 		 this.populationReader = populationReader;
 		 populationMap = populationReader.getPopulationMap();
 		 propertyMap = propertyReader.getPropertyMap();
-		 violationMap = violationReader.getViolationMap();
+		 violationMap = (HashMap<Integer, Integer>) violationReader.getViolationMap();
 	 }
 	 
 	 public int totalPopulation(){
@@ -36,10 +36,10 @@ public class Processor {
 		int total = 0;
 		for(Integer i : propertyMap.keySet()) {
 			if(type == "area") {
-				total += propertyMap.get(i).totalLivableArea;
+				total += propertyMap.get(i).getTotalLivableArea();
 			}
 			if(type == "marketvalue") {
-				total += propertyMap.get(i).maketValue;
+				total += propertyMap.get(i).getMaketValue();
 			}
 		}
 		double average = total/propertyMap.keySet().size();
