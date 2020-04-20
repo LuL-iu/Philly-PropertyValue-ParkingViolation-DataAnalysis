@@ -6,32 +6,22 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class PopulationReader implements CSVReader, Reader{
-	public HashMap<Integer, Integer> populationMap;
-	
-	
-	public HashMap<Integer, Integer> getPopulationMap(){
-		return populationMap;
-		
-	}
-	
-	
 	protected String filename;
 
 	public PopulationReader(String name) {
 		filename = name;
 	}
 
-	// gets all tweet data from text file
+	// gets all data from text file
 	@SuppressWarnings("resource")
 	public Map<Integer, Integer> getDataFromFile() {
 		Map<Integer, Integer> zipCodePopulations = new HashMap<Integer, Integer>();
 
 		// check file permissions and open
-		File f = ErrorChecker.checkReadability(filename);
 
 		try {
 			// File file = new File(filename); // Creation of File Descriptor for input file
-			FileReader fileReader = new FileReader(f); // Creation of File Reader object
+			FileReader fileReader = new FileReader(new File(filename)); // Creation of File Reader object
 
 			BufferedReader br = new BufferedReader(fileReader); // Creation of BufferedReader object
 
@@ -48,5 +38,16 @@ public class PopulationReader implements CSVReader, Reader{
 		}
 		return zipCodePopulations;
 
+	}
+	
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		String fileName = "population.txt";
+		PopulationReader pr = new PopulationReader(fileName);
+		HashMap<Integer, Integer> map = (HashMap<Integer, Integer>) pr.getDataFromFile();
+		for(int i : map.keySet()) {
+			System.out.println("zip : " + i + "\n" + "population " + map.get(i));
+			
+		}
 	}
 }

@@ -19,7 +19,7 @@ public class Processor {
 		 this.violationReader = violationReader;
 		 this.propertyReader = propertyReader;
 		 this.populationReader = populationReader;
-		 populationMap = populationReader.getPopulationMap();
+		 populationMap = (HashMap<Integer, Integer>) populationReader.getDataFromFile();
 		 propertyMap = propertyReader.getPropertyMap();
 		 violationMap = (HashMap<Integer, Integer>) violationReader.getViolationMap();
 	 }
