@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.TreeMap;
 
 @SuppressWarnings("rawtypes")
 public class ViolationCSVReader implements Reader, ViolationReader {
@@ -15,7 +16,7 @@ public class ViolationCSVReader implements Reader, ViolationReader {
 
 	// get data from CSV file
 	public Map<Integer, Integer> getViolationMap() {
-		Map<Integer, Integer> zipcodes = new HashMap<Integer, Integer>();
+		Map<Integer, Integer> zipcodes = new TreeMap<Integer, Integer>();
 		Scanner scanner = null; // Get scanner instance
 
 		// check file permissions and open
@@ -29,7 +30,6 @@ public class ViolationCSVReader implements Reader, ViolationReader {
 			scanner.useDelimiter(",|\\\n");
 
 			while (scanner.hasNext()) {
-
 				scanner.next(); // 0
 				scanner.next(); // 1
 				scanner.next(); // 2
