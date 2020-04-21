@@ -5,6 +5,7 @@ import java.io.FileReader;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.TreeMap;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -26,7 +27,7 @@ public class ViolationJsonReader implements ViolationReader{
 	// gets all data from file
 	@SuppressWarnings("rawtypes")
 	public Map getViolationMap()  {
-		Map<Integer, Integer> zipcodesWithParking = new HashMap<Integer, Integer>();
+		Map<Integer, Integer> zipcodesWithParking = new TreeMap<Integer, Integer>();
 		
 	// check file permissions and open
 		File f = ErrorChecker.checkReadability(filename);
