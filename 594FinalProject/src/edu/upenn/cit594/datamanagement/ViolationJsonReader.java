@@ -12,7 +12,7 @@ import org.json.simple.parser.JSONParser;
 
 
 
-public class ViolationJsonReader implements ViolationReader, JsonReader{
+public class ViolationJsonReader implements ViolationReader{
 
 	
 

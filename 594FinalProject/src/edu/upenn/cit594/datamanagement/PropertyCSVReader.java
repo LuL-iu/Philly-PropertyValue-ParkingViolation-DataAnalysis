@@ -23,7 +23,7 @@ import edu.upenn.cit594.data.PropertyValues;
  */
 @SuppressWarnings("rawtypes")
 
-public class PropertyCSVReader implements Reader, CSVReader {
+public class PropertyCSVReader implements Reader {
 	protected String filename;
 	private int total_livable_area, market_value, zip_code, countRow = 0;
 	private StringBuilder totLivAreaSB = new StringBuilder();

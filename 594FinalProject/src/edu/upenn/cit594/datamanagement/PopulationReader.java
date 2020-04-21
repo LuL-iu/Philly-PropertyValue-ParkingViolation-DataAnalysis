@@ -5,7 +5,7 @@ import java.io.FileReader;
 import java.util.HashMap;
 import java.util.Map;
 
-public class PopulationReader implements CSVReader, Reader{
+public class PopulationReader implements Reader{
 	protected String filename;
 
 	public PopulationReader(String name) {
