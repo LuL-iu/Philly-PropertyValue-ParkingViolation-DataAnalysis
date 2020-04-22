@@ -9,37 +9,40 @@ import java.util.TreeMap;
 @SuppressWarnings("rawtypes")
 public class ViolationCSVReader implements Reader, ViolationReader {
 	protected String filename;
-
+    private TreeMap<String, Double> zipcodesWithParking = new TreeMap();
+    private ErrorChecker EChecker = new ErrorChecker();
 	public ViolationCSVReader(String name) {
 		filename = name;
 	}
 
 	// get data from CSV file
-	public Map<Integer, Integer> getViolationMap() {
-		Map<Integer, Integer> zipcodes = new TreeMap<Integer, Integer>();
+	public TreeMap<String, Double> getViolationMap() {
 		Scanner scanner = null; // Get scanner instance
 
 		// check file permissions and open
-		File f = ErrorChecker.checkReadability(filename);
-
+		EChecker.checkReadability(filename);
+		File f = new File(filename);
+        
 		try {
 
 			scanner = new Scanner(f); // new File(filename));
-
 			// Set the delimiter used in file
 			scanner.useDelimiter(",|\\\n");
-
+			
+			
 			while (scanner.hasNext()) {
 				scanner.next(); // 0
-				scanner.next(); // 1
+				String fine = scanner.next();
 				scanner.next(); // 2
 				scanner.next(); // 3
 				String state = scanner.next(); // 4
 				// System.out.println(state);
 				scanner.next(); // 5
 				String zipcode = scanner.next(); // 6
-				if (zipcode.length() == 5 && state.contentEquals("PA")) {
-					fillInMap(zipcodes, zipcode);
+				zipcode = zipcode.replaceAll("\\s", "");
+				if (EChecker.is5DigitZip(zipcode) && state.contentEquals("PA") && EChecker.isNumber(fine)) {
+					Double fineValue = Double.parseDouble(fine);
+					fillInMap(zipcode, fineValue);
 				}
 			}
 
@@ -48,38 +51,35 @@ public class ViolationCSVReader implements Reader, ViolationReader {
 		} finally {
 			scanner.close();
 		}
-		return zipcodes;
+		return zipcodesWithParking;
 
 	}
 
 	// this is repeated from json maybe should be placed into Reader?
-	protected void fillInMap(Map<Integer, Integer> zipcodesWithParking, String zip_code) {
-		if (zip_code.length() == 5) {
-			if (!zipcodesWithParking.containsKey(Integer.parseInt(zip_code))) {
-				zipcodesWithParking.put(Integer.parseInt(zip_code), 1);
-			} else {
-				int tempZip = zipcodesWithParking.get(Integer.parseInt(zip_code)) + 1;
-				zipcodesWithParking.put(Integer.parseInt(zip_code), tempZip);
-			}
-		}
+	protected void fillInMap(String zip_code, double fine) {
+		if (zipcodesWithParking.containsKey(zip_code)) {
+			fine +=  zipcodesWithParking.get(zip_code);
+		} 
+		zipcodesWithParking.put(zip_code, fine);
+		
 	}
 
-	public static void main(String[] args) {
-		String filename = "parking.csv";
-		// String filename - "practice2.csv";
-		// filename = "practice3_smallZip.csv";
-		// filename = "practice4_smallPropertiesAllGoo.csv";
-		// filename = "practice5_moreZip.csv";
-		ViolationCSVReader read = new ViolationCSVReader(filename);
-		Map<Integer, Integer> l = read.getViolationMap();
-		Iterator it = l.entrySet().iterator();
-		while (it.hasNext()) {
-			Map.Entry pair = (Map.Entry) it.next();
-			System.out.println(pair.getKey() + " = " + pair.getValue().toString());
-			// it.remove(); // avoids a ConcurrentModificationException
-		}
-
-		System.out.println(l.size());
-	}
+//	public static void main(String[] args) {
+//		String filename = "parking.csv";
+//		// String filename - "practice2.csv";
+//		// filename = "practice3_smallZip.csv";
+//		// filename = "practice4_smallPropertiesAllGoo.csv";
+//		// filename = "practice5_moreZip.csv";
+//		ViolationCSVReader read = new ViolationCSVReader(filename);
+//		Map<String, Double> l = read.getViolationMap();
+//		Iterator it = l.entrySet().iterator();
+//		while (it.hasNext()) {
+//			Map.Entry pair = (Map.Entry) it.next();
+//			System.out.println(pair.getKey() + " = " + pair.getValue().toString());
+//			// it.remove(); // avoids a ConcurrentModificationException
+//		}
+//
+//		System.out.println(l.size());
+//	}
 	
 }

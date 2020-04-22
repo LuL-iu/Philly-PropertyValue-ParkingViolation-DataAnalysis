@@ -6,10 +6,7 @@ import java.util.Map;
 
 
 public interface ViolationReader extends Reader{
-//	public HashMap<Integer, Integer> violationMap;
-//	
-//	
-@SuppressWarnings("rawtypes")
-public Map getViolationMap();
+
+	public Map<String, Double> getViolationMap();
 
 }

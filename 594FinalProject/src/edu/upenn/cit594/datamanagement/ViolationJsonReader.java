@@ -18,7 +18,8 @@ public class ViolationJsonReader implements ViolationReader{
 	
 
 	protected String filename;
-
+    private TreeMap<String, Double> zipcodesWithParking = new TreeMap();
+    private ErrorChecker EChecker = new ErrorChecker();
 
 	public ViolationJsonReader(String name) {
 		filename = name;
@@ -27,10 +28,11 @@ public class ViolationJsonReader implements ViolationReader{
 	// gets all data from file
 	@SuppressWarnings("rawtypes")
 	public Map getViolationMap()  {
-		Map<Integer, Integer> zipcodesWithParking = new TreeMap<Integer, Integer>();
+		Map<String, Double> zipcodesWithParking = new TreeMap<String, Double>();
 		
 	// check file permissions and open
-		File f = ErrorChecker.checkReadability(filename);
+		EChecker.checkReadability(filename);
+		File f = new File(filename);
 		try {
 
 			// create a parser
@@ -49,14 +51,15 @@ public class ViolationJsonReader implements ViolationReader{
 			// System.out.println(violation.get("state"));
 			
 			
-     if(violation.get("state").toString().equals("PA")) {
-			//int zipcode = Integer.parseInt(violation.get("zip_code").toString());
-    	 String zip_code = violation.get("zip_code").toString();
-    	 
-			fillInMap(zipcodesWithParking, zip_code);
-			//System.out.println(violation.get("state"));
-			}
-     
+			if(violation.get("state").toString().equals("PA")) {
+				String zipcode = violation.get("zip_code").toString();
+				zipcode = zipcode.replaceAll("\\s", "");
+				String fine = violation.get("fine").toString();
+				if (EChecker.is5DigitZip(zipcode) && EChecker.isNumber(fine)) {
+					Double fineValue = Double.parseDouble(fine);
+					fillInMap(zipcode, fineValue);
+				}
+			}	
 		}
 
 		} catch (Exception e) {
@@ -68,34 +71,28 @@ public class ViolationJsonReader implements ViolationReader{
 
 	}
 	
-	protected void fillInMap(Map<Integer, Integer> zipcodesWithParking, String zip_code) {
-		if(zip_code.length() == 5) {	
-		if( !zipcodesWithParking.containsKey(Integer.parseInt(zip_code))) {
-			zipcodesWithParking.put(Integer.parseInt(zip_code), 1);
-			}
-		else {
-			int tempZip = zipcodesWithParking.get(Integer.parseInt(zip_code))+1;
-			zipcodesWithParking.put(Integer.parseInt(zip_code), tempZip);
-		}
-		}
+	protected void fillInMap(String zip_code,  double fine) {
+		if (zipcodesWithParking.containsKey(zip_code)) {
+			fine +=  zipcodesWithParking.get(zip_code);
+		} 
+		zipcodesWithParking.put(zip_code, fine);
 	}
-	
-public static void main(String[] args) {
-	String filename = "parking.json";
-	ViolationJsonReader tr = new ViolationJsonReader(filename);
-	Map <Integer, Integer> m = tr.getViolationMap();
-	@SuppressWarnings("rawtypes")
-	Iterator it = m.entrySet().iterator();
-	while (it.hasNext()) {
-		Map.Entry pair = (Map.Entry) it.next();
-	System.out.println(pair.getKey() + " = " + pair.getValue().toString());
-	//   it.remove(); // avoids a ConcurrentModificationException
-	   
-}
-	//System.out.println(m.size());
+		
+//	public static void main(String[] args) {
+//		String filename = "parking.json";
+//		ViolationJsonReader tr = new ViolationJsonReader(filename);
+//		Map <Integer, Integer> m = tr.getViolationMap();
+//		@SuppressWarnings("rawtypes")
+//		Iterator it = m.entrySet().iterator();
+//		while (it.hasNext()) {
+//			Map.Entry pair = (Map.Entry) it.next();
+//		System.out.println(pair.getKey() + " = " + pair.getValue().toString());
+//		//   it.remove(); // avoids a ConcurrentModificationException
+//		   
+//	}
+		//System.out.println(m.size());
 
 	
-}
 	
 	
 }

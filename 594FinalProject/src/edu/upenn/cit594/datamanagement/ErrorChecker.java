@@ -1,13 +1,17 @@
 package edu.upenn.cit594.datamanagement;
 
 import java.io.File;
+import java.util.Iterator;
+import java.util.Map;
+
+import edu.upenn.cit594.data.PropertyValues;
 
 //Does the system fail when wrong file is inputted by user?
 public class ErrorChecker {
 
 
 	// checks if file is readable
-	public static File checkReadability(String filename) {
+	public boolean checkReadability(String filename) {
 		File f = null;
 
 		boolean fileReads = false;
@@ -37,12 +41,12 @@ public class ErrorChecker {
 			System.out.println("ERROR:  " + filename + "  file is unreadable or does not exist");
 			System.exit(0);
 		}
-		return f;
+		return true;
 
 	}
 	
 	// check if String is a number or if it's null
-		public static boolean isNumber(String dataFromFile) {
+		public boolean isNumber(String dataFromFile) {
 			if (dataFromFile == null)
 				return false;
 			try {
@@ -54,13 +58,27 @@ public class ErrorChecker {
 		}
 
 		// check if zipcode is valid
-		public static boolean isValidZip(String zipcode) {
+		public boolean isValidZip(String zipcode) {
+			//System.out.println(zipcode);
 			if (zipcode.length() >= 5 && isNumber(zipcode)) {
-				zipcode = zipcode.substring(0, 5);
-				// zip_code = zipcode;
+				return true;
+			}
+			return false;
+		}
+		
+		// check if zipcode is valid
+		public boolean is5DigitZip(String zipcode) {
+			//System.out.println(zipcode);
+			if (zipcode.length() == 5 && isNumber(zipcode)) {
 				return true;
 			}
 			return false;
 		}
 
+		
+//		public void main(String[] args) {
+//			String zip = " 1912";
+//			System.out.println(isValidZip(zip));
+//			
+//		}
 }

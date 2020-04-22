@@ -1,5 +1,11 @@
 package edu.upenn.cit594;
 
+
+import edu.upenn.cit594.datamanagement.PopulationReader;
+import edu.upenn.cit594.datamanagement.PropertyCSVReader;
+import edu.upenn.cit594.datamanagement.ViolationCSVReader;
+import edu.upenn.cit594.datamanagement.ViolationJsonReader;
+import edu.upenn.cit594.datamanagement.ViolationReader;
 import edu.upenn.cit594.logging.GlobalName;
 import edu.upenn.cit594.logging.Logger;
 import edu.upenn.cit594.processor.Processor;
@@ -14,6 +20,42 @@ public class Main {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
+		if(args.length != 5) {
+			System.out.println("Error, please enter argumnets again");
+			System.exit(0);
+		}
+		String format = args[0];
+		format = format.toLowerCase();
+		if(!format.equals("json") && !format.equals("csv")){
+			System.out.println("Error, please enter right file format");
+			System.exit(0);
+		}
+		
+		String parkingFile = args[1];
+		String propertyFile = args[2];
+		String populationFile = args[3];
+		String logFile = args[4];
+		
+		PropertyCSVReader propertyReader = new PropertyCSVReader(propertyFile);
+		PopulationReader populationReader = new PopulationReader(populationFile);
+		ViolationReader violationReader = null;
+		
+		//create the log file with file name provided by arguments
+		GlobalName logName = GlobalName.getInstance();
+		logName.setName(logFile);
+		Logger logger = Logger.getInstance();
+		
+		//create parkingFine Reader "txt" or "json" format
+		if(format.equals("csv")) {
+			violationReader = new ViolationCSVReader(parkingFile);
+		}
+		else if(format.equals("json")) {
+			violationReader = new ViolationJsonReader(parkingFile);
+		}
+		
+		Processor processor = new Processor(violationReader, propertyReader, populationReader, logger);
+		UserInterface ui = new UserInterface(processor);
+		ui.start();
 
 	}
 

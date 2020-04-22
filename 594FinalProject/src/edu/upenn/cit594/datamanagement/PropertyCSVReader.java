@@ -10,8 +10,10 @@ package edu.upenn.cit594.datamanagement;
 //change zipcode to int
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import edu.upenn.cit594.data.PropertyValues;
 
@@ -26,28 +28,25 @@ import edu.upenn.cit594.data.PropertyValues;
 public class PropertyCSVReader implements Reader {
 	protected String filename;
 	private int total_livable_area, market_value, zip_code, countRow = 0;
-	private StringBuilder totLivAreaSB = new StringBuilder();
-	private StringBuilder marketValSB = new StringBuilder();
-	//private StringBuilder buildCodeSB = new StringBuilder();
-	private StringBuilder zipSB = new StringBuilder();
+	private ErrorChecker ECheck = new ErrorChecker();
+	private HashMap<String, List<PropertyValues>> propertyMap;
 
 	public PropertyCSVReader(String name) {
 		filename = name;
+		propertyMap = new HashMap();
 	}
 
 	// get data from CSV file
 	@SuppressWarnings("resource")
-	public Map<String, PropertyValues> getPropertyMap() {
+	public HashMap<String, List<PropertyValues>> getPropertyMap() {
 		//countRow = 0; // this is for error checking
-		Map<String, PropertyValues> zipcodes = new HashMap<String, PropertyValues>(); // chosen since we have to add specifically to
-		String line = null;															// already used zipcodes
+		String line = null;														
 		// Scanner scanner = null; // Get scanner instance
 
 		// check file permissions and open
 		// File f = checkReadability(filename);
 		try {
 			BufferedReader reader = null;
-
 			reader = new BufferedReader(new FileReader(filename));
 			//String line = null;
 			if ((line = reader.readLine()) != null) {
@@ -57,7 +56,7 @@ public class PropertyCSVReader implements Reader {
 			}
 			while ((line = reader.readLine()) != null) {
 				//System.out.println(line);
-				zipcodes = seperateDataForResCSV(line, zipcodes);
+				seperateDataForResCSV(line);
 				countRow++;
 			}
 		} catch (Exception e) {
@@ -66,7 +65,7 @@ public class PropertyCSVReader implements Reader {
 			System.exit(0);
 		}
 
-		return zipcodes;
+		return propertyMap;
 	}
 
 	protected void setUpHeaderVariablesResCSV(String csvLine) {
@@ -76,126 +75,70 @@ public class PropertyCSVReader implements Reader {
 		for (int k = 0; k < header.length; k++) {
 			if (header[k].equals("total_livable_area")) {
 				total_livable_area = k;
+				//System.out.println("livable head = " + k);
 			}
 			if (header[k].equals("market_value")) {
 				market_value = k;
+				//System.out.println("market_value = " + k);
 			}
-//			if (header[k].equals("building_code")) {
-//				building_code = k;
-//			}
 			if (header[k].equals("zip_code")) {
 				zip_code = k;
+				//System.out.println("zip_code = " + k);
 			}
 		}
-		//System.out.println(header.toString());
 	}
 
 	// we can also use REGEX:
 	// https://stackoverflow.com/questions/11456850/split-a-string-by-commas-but-ignore-commas-within-double-quotes-using-javascript
 	// or possibly "/'[^']+'|[^,]+/"
-	protected Map<String, PropertyValues> seperateDataForResCSV(String csvLine, Map<String, PropertyValues> zipcodes) {
-		int columnCount = 0;
-
-		// switches to track writing
-		boolean openQuote = false; // off
-		// int commaWriteSwitch = 0; // off
-
-		for (int l = 0; l < csvLine.length(); l++) {
-			char c = csvLine.charAt(l);
-			
-			//checks commas inside of cells
-			if (c == '"' && openQuote == false)
-				openQuote = true;
-			else if (c == '"' && openQuote == true)
-				openQuote = false;
-			
-			
-			if (columnCount == total_livable_area || columnCount == market_value //|| columnCount == building_code
-					|| columnCount == zip_code) {
-
+	protected void seperateDataForResCSV(String csvLine) {
+		String[] cells = csvLine.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
+		//System.out.println(cells.length);
+		String livableArea = " ";
+		String marketValue = " ";
+		String zipcode = " ";
+		for (int i = 0; i < cells.length; i ++) {
+			if (i == total_livable_area) {
+				livableArea = cells[i];
+			}
+			if(i == zip_code) {
+				zipcode = cells[i];
+				zipcode = zipcode.replaceAll("\\s", "");
+				zipcode = zipcode.replaceAll("\\-", "");
 				
-
-				// normal no quote
-				if (openQuote == false && c != ',' && c != '"') {
-					addToStringBuilder(columnCount, c);
-				}
-
-				// with quote
-				if (openQuote == true && c == ',' && c != '"') {
-					addToStringBuilder(columnCount, c);
-				}
-
+				
 			}
-			if (openQuote == false && c == ',') {
-
-				columnCount++;
+			if(i == market_value) {
+				marketValue = cells[i];
 			}
-
 		}
 		
-		
-		if(ErrorChecker.isValidZip(zipSB.toString())
-				&& ErrorChecker.isNumber(marketValSB.toString()) && ErrorChecker.isNumber(totLivAreaSB.toString())) {
-			
-		if (!zipcodes.containsKey(zipSB.toString().substring(0,5)) ) {
-			
-			PropertyValues tempPropVal = new PropertyValues(Double.parseDouble(marketValSB.toString()), Double.parseDouble(totLivAreaSB.toString()));
-//			if(tempPropVal.updateDataRes(totLivAreaSB.toString(), marketValSB.toString(), buildCodeSB.toString(),
-//					zipSB.toString(), countRow)) {
-			zipcodes.put(zipSB.toString().substring(0, 5), tempPropVal);
+		if(ECheck.isValidZip(zipcode) && ECheck.isNumber(livableArea) && ECheck.isNumber(marketValue)) {
+			zipcode = zipcode.substring(0, 5);
+			double lArea = Double.parseDouble(livableArea);
+			double mValue = Double.parseDouble(marketValue);
+			PropertyValues pValue = new PropertyValues(mValue, lArea);
+			List<PropertyValues> l = new ArrayList();
+			if(propertyMap.containsKey(zipcode)) {
+				l = propertyMap.get(zipcode);
+				
 			}
-			
-		else {//if(ErrorChecker.isValidZip(zipSB.toString()))
-			
-			//if null or poor quality will not update
-			zipcodes.get(zipSB.toString().substring(0,5)).update(Double.parseDouble(marketValSB.toString()), Double.parseDouble(totLivAreaSB.toString()));
-			
-			//updateDataRes(totLivAreaSB.toString(), marketValSB.toString(),
-				//	buildCodeSB.toString(), zipSB.toString(), countRow);
+			l.add(pValue);
+			propertyMap.put(zipcode, l);
 		}
-		}
-		// reset StringBuilders
-		totLivAreaSB = new StringBuilder();
-		marketValSB = new StringBuilder();
-		//buildCodeSB = new StringBuilder();
-		zipSB = new StringBuilder();
-
-		return zipcodes;
 	}
 
-	protected void addToStringBuilder(int columnCount, char c) {
-		if (columnCount == total_livable_area)
-			totLivAreaSB.append(c);
-		if (columnCount == market_value)
-			marketValSB.append(c);
-//		if (columnCount == building_code)
-//			buildCodeSB.append(c);
-		if (columnCount == zip_code)
-			zipSB.append(c);
-	}
-	
-	
-	
-
-	public static void main(String[] args) {
-		String filename = "properties.csv";
-		//String filename - "practice2.csv";
-		 //filename = "practice3_smallZip.csv";
-		 //filename = "practice4_smallPropertiesAllGoo.csv";
-		//filename = "practice5_moreZip.csv";
-		PropertyCSVReader read = new PropertyCSVReader(filename);
-		Map<String, PropertyValues> l = read.getPropertyMap();
-		Iterator it = l.entrySet().iterator();
-		while (it.hasNext()) {
-			Map.Entry pair = (Map.Entry) it.next();
-			System.out.println(pair.getKey() + " = " + pair.getValue().toString());
-		  // it.remove(); // avoids a ConcurrentModificationException
-		}
-		
-		
-		
-
-		System.out.println(l.size());
-	}
+//	public static void main(String[] args) {
+//		String filename = "properties.csv";
+//		PropertyCSVReader read = new PropertyCSVReader(filename);
+//		Map<String, List<PropertyValues>> l = read.getPropertyMap();
+//		for(String s : l.keySet()) {
+//			System.out.println( "zip: " + s +" " + l.get(s).size());
+//			for(PropertyValues pv : l.get(s)) {
+//				System.out.println("ma: " + pv.getMaketValue());
+//				System.out.println("la" + pv.getTotalLivableArea());
+//			}
+//		}
+//	}
 }
 
