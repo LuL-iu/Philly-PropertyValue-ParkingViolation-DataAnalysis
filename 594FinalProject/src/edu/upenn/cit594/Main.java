@@ -42,9 +42,10 @@ public class Main {
 		ViolationReader violationReader = null;
 		
 		//create the log file with file name provided by arguments
-		GlobalName logName = GlobalName.getInstance();
-		logName.setName(logFile);
+//		GlobalName logName = GlobalName.getInstance();
+//		logName.setName(logFile);
 		Logger logger = Logger.getInstance();
+		logger.makeFile(filenameFromUser);
 		
 		//create parkingFine Reader "txt" or "json" format
 		if(format.equals("csv")) {
