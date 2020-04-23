@@ -7,7 +7,7 @@ import java.util.Scanner;
 import java.util.TreeMap;
 
 import edu.upenn.cit594.datamanagement.ErrorChecker;
-import edu.upenn.cit594.logging.Logger;
+import edu.upenn.cit594.logging.Logger3;
 import edu.upenn.cit594.processor.Processor;
 
 /**

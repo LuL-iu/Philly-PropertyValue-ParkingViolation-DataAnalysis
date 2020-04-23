@@ -1,8 +1,6 @@
 package edu.upenn.cit594.processor;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -10,9 +8,9 @@ import java.util.TreeMap;
 import edu.upenn.cit594.data.PropertyValues;
 import edu.upenn.cit594.datamanagement.PopulationReader;
 import edu.upenn.cit594.datamanagement.PropertyCSVReader;
-import edu.upenn.cit594.datamanagement.Reader;
 import edu.upenn.cit594.datamanagement.ViolationReader;
 import edu.upenn.cit594.logging.Logger;
+
 
 public class Processor {
 	 protected ViolationReader violationReader; 

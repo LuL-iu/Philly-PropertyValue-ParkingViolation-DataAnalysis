@@ -8,9 +8,10 @@ import edu.upenn.cit594.datamanagement.ViolationJsonReader;
 import edu.upenn.cit594.datamanagement.ViolationReader;
 import edu.upenn.cit594.logging.GlobalName;
 import edu.upenn.cit594.logging.Logger;
+import edu.upenn.cit594.logging.Logger3;
 import edu.upenn.cit594.processor.Processor;
 import edu.upenn.cit594.ui.UserInterface;
-
+// check json
 /**
  * this is a main class, which checks the form of arguments, read the arguments,  create other objects and their relationships, then start 
  * the application via the UI.
@@ -50,7 +51,7 @@ public class Main {
 			violationReader = new ViolationCSVReader(parkingFile);
 		}
 		else if(format.equals("json")) {
-			violationReader = new ViolationJsonReader(parkingFile);
+		violationReader = new ViolationJsonReader(parkingFile);
 		}
 		
 		Processor processor = new Processor(violationReader, propertyReader, populationReader, logger);
