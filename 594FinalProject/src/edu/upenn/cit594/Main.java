@@ -8,9 +8,10 @@ import edu.upenn.cit594.datamanagement.ViolationJsonReader;
 import edu.upenn.cit594.datamanagement.ViolationReader;
 import edu.upenn.cit594.logging.GlobalName;
 import edu.upenn.cit594.logging.Logger;
+import edu.upenn.cit594.logging.Logger3;
 import edu.upenn.cit594.processor.Processor;
 import edu.upenn.cit594.ui.UserInterface;
-
+// check json
 /**
  * this is a main class, which checks the form of arguments, read the arguments,  create other objects and their relationships, then start 
  * the application via the UI.
@@ -41,16 +42,17 @@ public class Main {
 		ViolationReader violationReader = null;
 		
 		//create the log file with file name provided by arguments
-		GlobalName logName = GlobalName.getInstance();
-		logName.setName(logFile);
+//		GlobalName logName = GlobalName.getInstance();
+//		logName.setName(logFile);
 		Logger logger = Logger.getInstance();
+		logger.makeFile(filenameFromUser);
 		
 		//create parkingFine Reader "txt" or "json" format
 		if(format.equals("csv")) {
 			violationReader = new ViolationCSVReader(parkingFile);
 		}
 		else if(format.equals("json")) {
-			violationReader = new ViolationJsonReader(parkingFile);
+		violationReader = new ViolationJsonReader(parkingFile);
 		}
 		
 		Processor processor = new Processor(violationReader, propertyReader, populationReader, logger);

@@ -1,13 +1,7 @@
-//TO DO
-//need fix processor
-// need to checkreadabiity is working maybe filereader instead
 
 
 package edu.upenn.cit594.datamanagement;
-//TO DO
-//living area is a double
-// if any null than discard
-//change zipcode to int
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;

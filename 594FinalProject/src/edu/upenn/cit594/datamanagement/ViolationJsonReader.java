@@ -2,7 +2,6 @@ package edu.upenn.cit594.datamanagement;
 
 import java.io.File;
 import java.io.FileReader;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeMap;
@@ -10,6 +9,8 @@ import java.util.TreeMap;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+
+
 
 
 
@@ -28,7 +29,7 @@ public class ViolationJsonReader implements ViolationReader{
 	// gets all data from file
 	@SuppressWarnings("rawtypes")
 	public Map getViolationMap()  {
-		Map<String, Double> zipcodesWithParking = new TreeMap<String, Double>();
+		//Map<String, Double> zipcodesWithParking = new TreeMap<String, Double>();
 		
 	// check file permissions and open
 		EChecker.checkReadability(filename);
@@ -44,18 +45,20 @@ public class ViolationJsonReader implements ViolationReader{
 			// iterate while there are more objects in array
 			while (iter.hasNext()) {
 				
-				
+
 			// get the next JSON object
 			JSONObject violation = (JSONObject) iter.next();
 			// use the "get" method to print the value associated with that key
-			// System.out.println(violation.get("state"));
-			
 			
 			if(violation.get("state").toString().equals("PA")) {
 				String zipcode = violation.get("zip_code").toString();
+//				System.out.println(violation.get("state").toString());
+//				System.out.println(zipcode);
 				zipcode = zipcode.replaceAll("\\s", "");
-				String fine = violation.get("fine").toString();
+				Object fineObj = violation.get("fine");
+			    String fine = fineObj.toString();
 				if (EChecker.is5DigitZip(zipcode) && EChecker.isNumber(fine)) {
+					//System.out.println(fine);
 					Double fineValue = Double.parseDouble(fine);
 					fillInMap(zipcode, fineValue);
 				}
@@ -90,9 +93,9 @@ public class ViolationJsonReader implements ViolationReader{
 //		//   it.remove(); // avoids a ConcurrentModificationException
 //		   
 //	}
-		//System.out.println(m.size());
-
-	
-	
+//		System.out.println(m.size());
+//
+//	
+//	}
 	
 }
