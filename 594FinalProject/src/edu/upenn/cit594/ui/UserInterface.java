@@ -66,6 +66,7 @@ public class UserInterface {
 				displayTotalResidentialMarketValuePerCapitaInHighestFineLocation();
 			}
 		}
+		in.close();
 	}
 	
 	protected void displayTotalPopulation() { 
