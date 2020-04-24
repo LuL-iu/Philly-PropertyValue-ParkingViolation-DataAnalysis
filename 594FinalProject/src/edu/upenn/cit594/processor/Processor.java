@@ -35,6 +35,9 @@ public class Processor {
 		 this.propertyMap = propertyReader.getPropertyMap();
 	 }
 	 
+	 
+	 
+	 
 	 public int totalPopulation(){
 		 int total = 0;
 		 for(String s : populationMap.keySet()) {
