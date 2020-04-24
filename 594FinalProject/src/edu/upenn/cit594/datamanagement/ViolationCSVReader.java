@@ -1,4 +1,5 @@
 package edu.upenn.cit594.datamanagement;
+
 import java.io.File;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -6,30 +7,36 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.TreeMap;
 
+import edu.upenn.cit594.logging.Logger;
+
 @SuppressWarnings("rawtypes")
 public class ViolationCSVReader implements Reader, ViolationReader {
 	protected String filename;
-    private TreeMap<String, Double> zipcodesWithParking = new TreeMap();
-    private ErrorChecker EChecker = new ErrorChecker();
+	private TreeMap<String, Double> zipcodesWithParking = new TreeMap();
+	private ErrorChecker EChecker = new ErrorChecker();
+
 	public ViolationCSVReader(String name) {
 		filename = name;
 	}
 
 	// get data from CSV file
 	public TreeMap<String, Double> getViolationMap() {
+		// log filename
+		Logger logger = Logger.getInstance();
+		logger.log(filename);
+
 		Scanner scanner = null; // Get scanner instance
 
 		// check file permissions and open
 		EChecker.checkReadability(filename);
 		File f = new File(filename);
-        
+
 		try {
 
 			scanner = new Scanner(f); // new File(filename));
 			// Set the delimiter used in file
 			scanner.useDelimiter(",|\\\n");
-			
-			
+
 			while (scanner.hasNext()) {
 				scanner.next(); // 0
 				String fine = scanner.next();
@@ -58,10 +65,10 @@ public class ViolationCSVReader implements Reader, ViolationReader {
 	// this is repeated from json maybe should be placed into Reader?
 	protected void fillInMap(String zip_code, double fine) {
 		if (zipcodesWithParking.containsKey(zip_code)) {
-			fine +=  zipcodesWithParking.get(zip_code);
-		} 
+			fine += zipcodesWithParking.get(zip_code);
+		}
 		zipcodesWithParking.put(zip_code, fine);
-		
+
 	}
 
 //	public static void main(String[] args) {
@@ -81,5 +88,5 @@ public class ViolationCSVReader implements Reader, ViolationReader {
 //
 //		System.out.println(l.size());
 //	}
-	
+
 }

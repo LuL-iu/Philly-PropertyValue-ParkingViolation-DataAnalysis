@@ -5,6 +5,7 @@ import java.util.Scanner;
 import java.util.TreeMap;
 
 import edu.upenn.cit594.datamanagement.ErrorChecker;
+import edu.upenn.cit594.logging.Logger;
 import edu.upenn.cit594.processor.PopulationProcessor;
 import edu.upenn.cit594.processor.PropertyProcessor;
 import edu.upenn.cit594.processor.ViolationProcessor;
@@ -95,11 +96,13 @@ public class UserInterface {
 	}
 	
 	private void displayAverage(String type) {
+		Logger logger = Logger.getInstance();
 		System.out.println("Enter a ZIP code");
 		int average = 0; 
 		String zipcode = in.next();
 		zipcode.replaceAll("\\s",  "");
 		if(EChecker.is5DigitZip(zipcode)) {
+			logger.log(zipcode);
 			if(type.equals("LivableArea")) {
 				average = propertyProcessor.averageResidentialTotalLivableArea(zipcode);
 			}

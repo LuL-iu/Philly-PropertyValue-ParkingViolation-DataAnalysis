@@ -49,6 +49,8 @@ public class Main {
 		Logger logger = Logger.getInstance();
 //		logger.makeFile(logFile);
 		
+		logger.makeFile(format, parkingFile, propertyFile, populationFile, logFile);
+		
 		//create parkingFine Reader "txt" or "json" format
 		if(format.equals("csv")) {
 			violationReader = new ViolationCSVReader(parkingFile);

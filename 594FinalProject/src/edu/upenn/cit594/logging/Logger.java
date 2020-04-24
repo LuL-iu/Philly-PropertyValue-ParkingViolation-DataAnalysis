@@ -23,10 +23,10 @@ public class Logger {
 
 	
 
-	public void makeFile(String filenameFromUser, String parkViolationFormat, String
+	public void makeFile( String parkViolationFormat, String
 			parkingViolFile, String propertyValFile, String popFile, String logFile) {
 		
-		filename = filenameFromUser;
+		filename = logFile;
 
 		try {
 			File f = new File(filename);
@@ -48,10 +48,10 @@ public class Logger {
 				parkingViolFile,  propertyValFile,  popFile,  logFile);
 	}
 
-	// method to print filename [mainly for testing]
-	public void printFileName() {
-		System.out.println(filename);
-	}
+//	// method to print filename [mainly for testing]
+//	public void printFileName() {
+//		System.out.println(filename);
+//	}
 
 	private String getFileName() {
 		return filename;
@@ -66,7 +66,7 @@ public class Logger {
 	private void programStart (String parkViolationFormat, String
 			parkingViolFile, String propertyValFile, String popFile, String logFile) {
 		 out.println(System.currentTimeMillis() + " " + parkViolationFormat + " " + parkingViolFile
-				 +" " + propertyValFile + " " + popFile + logFile);
+				 +" " + propertyValFile + " " + popFile + " "+  logFile);
 	}
 	
 	

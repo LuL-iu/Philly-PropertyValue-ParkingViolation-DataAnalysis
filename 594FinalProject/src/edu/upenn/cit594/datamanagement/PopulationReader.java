@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import edu.upenn.cit594.logging.Logger;
+
 public class PopulationReader implements Reader{
 	protected String filename;
 	private Map<String, Integer> zipCodePopulations;
@@ -25,6 +27,11 @@ public class PopulationReader implements Reader{
 		
 			// File file = new File(filename); // Creation of File Descriptor for input file
 			File f = new File(filename);
+			
+			//log filename
+			Logger logger = Logger.getInstance();
+			logger.log(filename);
+			
 			FileReader fileReader;
 			try {
 				fileReader = new FileReader(f);
@@ -62,6 +69,11 @@ public class PopulationReader implements Reader{
 	
 		return zipCodePopulations;
 
+	}
+
+	private Logger getinstance() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 //	public static void main(String[] args) {

@@ -10,6 +10,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import edu.upenn.cit594.data.PropertyValues;
+import edu.upenn.cit594.logging.Logger;
 
 /**
  * CSV file reader opens CSV states
@@ -33,6 +34,11 @@ public class PropertyCSVReader implements Reader {
 	// get data from CSV file
 	@SuppressWarnings("resource")
 	public HashMap<String, List<PropertyValues>> getPropertyMap() {
+		
+		//log filename
+		Logger logger = Logger.getInstance();
+		logger.log(filename);
+		
 		//countRow = 0; // this is for error checking
 		String line = null;														
 		// Scanner scanner = null; // Get scanner instance
