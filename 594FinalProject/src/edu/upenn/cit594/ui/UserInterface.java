@@ -39,6 +39,8 @@ public class UserInterface {
 		propertyProcessor.buildMap();
 		while(true) {
 			int choice = in.nextInt();
+			Logger logger = Logger.getInstance();
+			logger.log( Integer.toString(choice));
 			if(choice == 0) {
 				break;
 			}
