@@ -3,12 +3,14 @@ package edu.upenn.cit594.ui;
 
 
 
+import java.util.Map;
 import java.util.Scanner;
 import java.util.TreeMap;
 
 import edu.upenn.cit594.datamanagement.ErrorChecker;
-import edu.upenn.cit594.logging.Logger3;
-import edu.upenn.cit594.processor.Processor;
+import edu.upenn.cit594.processor.PopulationProcessor;
+import edu.upenn.cit594.processor.PropertyProcessor;
+import edu.upenn.cit594.processor.ViolationProcessor;
 
 /**
  * this is user interface class, it is responsible for the interacting with user and processing data as it relates to display it.
@@ -16,12 +18,16 @@ import edu.upenn.cit594.processor.Processor;
  */
 
 public class UserInterface {
-	protected Processor processor;
+	protected PopulationProcessor populationProcessor;
+	protected ViolationProcessor violationProcessor;
+	protected PropertyProcessor propertyProcessor;
 	protected Scanner in;
 	protected ErrorChecker EChecker = new ErrorChecker();
 	
-	public UserInterface(Processor processor) {
-		this.processor = processor;
+	public UserInterface(PopulationProcessor populationProcessor, ViolationProcessor violationProcessor, PropertyProcessor propertyProcessor) {
+		this.populationProcessor = populationProcessor;
+		this.violationProcessor = violationProcessor;
+		this.propertyProcessor = propertyProcessor;
 		in = new Scanner(System.in);
 	}
 	
@@ -30,7 +36,9 @@ public class UserInterface {
 				+ " each ZIP codes\nEnter 3 to show average market value for residents in specified ZIP code\nEnter 4 to1 show average total livavle area"
 				+ "for residents in specified ZIP code\nEnter 5 to show total residential market value per capita for specifed ZIP code\nEnter "
 				+ "6 to show the results of your custom feature");
-		processor.SetUp();
+		populationProcessor.buildMap();
+		violationProcessor.buildMap();
+		propertyProcessor.buildMap();
 		while(true) {
 			int choice = in.nextInt();
 			if(choice == 0) {
@@ -56,16 +64,21 @@ public class UserInterface {
 			if(choice == 5) {
 				displayTotalResidentialMarketValuePerCapita();
 			}
+			
+			if(choice == 6) {
+				displayTotalResidentialMarketValuePerCapitaInHighestFineLocation();
+			}
 		}
 	}
 	
 	protected void displayTotalPopulation() { 
-		int totalPopulation = processor.totalPopulation();
+		int totalPopulation = populationProcessor.totalPopulation();
 		System.out.println("Total population is " + totalPopulation);
 	}
 	
 	protected void displayParkingFinePerCapita() {
-		TreeMap<String, Double> finePerCapitia = processor.totalFinesPerCaptia();
+		Map<String, Integer> populationMap = populationProcessor.getPopulationMap();
+		TreeMap<String, Double> finePerCapitia = violationProcessor.totalFinesPerCaptia(populationMap);
 		for(String s: finePerCapitia.keySet()) {
 			System.out.println(s + " " + finePerCapitia.get(s));
 		}
@@ -90,15 +103,23 @@ public class UserInterface {
 		zipcode.replaceAll("\\s",  "");
 		if(EChecker.is5DigitZip(zipcode)) {
 			if(type.equals("LivableArea")) {
-				average = processor.averageResidentialTotalLivableArea(zipcode);
+				average = propertyProcessor.averageResidentialTotalLivableArea(zipcode);
 			}
 			if(type.equals("MarketValuePerCapita")) {
-				average = processor.totalResidentialMarketValuePerCapita(zipcode);
+				Map<String, Integer> populationMap = populationProcessor.getPopulationMap();
+				average = propertyProcessor.totalResidentialMarketValuePerCapita(zipcode, populationMap);
 			}
 			if(type.equals("MarketValue")) {
-				average = processor.averageResidentialMarketValue(zipcode);
+				average = propertyProcessor.averageResidentialMarketValue(zipcode);
 			}
 		}
+		System.out.println(average);
+	}
+	
+	private void displayTotalResidentialMarketValuePerCapitaInHighestFineLocation() {
+		String highestFineZipcode = violationProcessor.getHighestFineLocation();
+		Map<String, Integer> populationMap = populationProcessor.getPopulationMap();
+		int average = propertyProcessor.totalResidentialLivableAreaPerCapita(highestFineZipcode, populationMap);
 		System.out.println(average);
 	}
 

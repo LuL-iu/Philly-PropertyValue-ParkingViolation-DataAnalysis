@@ -8,8 +8,10 @@ import edu.upenn.cit594.datamanagement.ViolationJsonReader;
 import edu.upenn.cit594.datamanagement.ViolationReader;
 import edu.upenn.cit594.logging.GlobalName;
 import edu.upenn.cit594.logging.Logger;
-import edu.upenn.cit594.logging.Logger3;
+import edu.upenn.cit594.processor.PopulationProcessor;
 import edu.upenn.cit594.processor.Processor;
+import edu.upenn.cit594.processor.PropertyProcessor;
+import edu.upenn.cit594.processor.ViolationProcessor;
 import edu.upenn.cit594.ui.UserInterface;
 // check json
 /**
@@ -45,7 +47,7 @@ public class Main {
 //		GlobalName logName = GlobalName.getInstance();
 //		logName.setName(logFile);
 		Logger logger = Logger.getInstance();
-		logger.makeFile(filenameFromUser);
+//		logger.makeFile(logFile);
 		
 		//create parkingFine Reader "txt" or "json" format
 		if(format.equals("csv")) {
@@ -55,8 +57,10 @@ public class Main {
 		violationReader = new ViolationJsonReader(parkingFile);
 		}
 		
-		Processor processor = new Processor(violationReader, propertyReader, populationReader, logger);
-		UserInterface ui = new UserInterface(processor);
+		ViolationProcessor vProcessor = new ViolationProcessor(violationReader, logger);
+		PopulationProcessor poProcessor = new PopulationProcessor(populationReader, logger);
+		PropertyProcessor prProcessor = new PropertyProcessor(propertyReader, logger);
+		UserInterface ui = new UserInterface(poProcessor, vProcessor, prProcessor);
 		ui.start();
 
 	}
