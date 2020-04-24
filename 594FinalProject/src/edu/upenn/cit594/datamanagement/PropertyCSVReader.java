@@ -98,9 +98,7 @@ public class PropertyCSVReader implements Reader {
 			if(i == zip_code) {
 				zipcode = cells[i];
 				zipcode = zipcode.replaceAll("\\s", "");
-				zipcode = zipcode.replaceAll("\\-", "");
-				
-				
+				zipcode = zipcode.replaceAll("\\-", "");		
 			}
 			if(i == market_value) {
 				marketValue = cells[i];
@@ -115,7 +113,6 @@ public class PropertyCSVReader implements Reader {
 			List<PropertyValues> l = new ArrayList();
 			if(propertyMap.containsKey(zipcode)) {
 				l = propertyMap.get(zipcode);
-				
 			}
 			l.add(pValue);
 			propertyMap.put(zipcode, l);

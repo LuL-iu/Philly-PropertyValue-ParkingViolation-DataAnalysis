@@ -24,7 +24,16 @@ public class PropertyProcessor implements Processor {
 	 public void buildMap() {
 		 this.propertyMap = propertyReader.getPropertyMap();
 	 }
-
+	 
+	 public Double getNumber(PropertyValues p, String type) {
+		 if(type == "area") {
+			 return p.getTotalLivableArea();
+		 }
+		 else {
+			 return p.getMaketValue();
+		 }
+	 }
+	 
 	 public int Average(String type, String zipCode) {
 		int total = 0;
 		int average;
@@ -33,12 +42,7 @@ public class PropertyProcessor implements Processor {
 			if(s.equals(zipCode)) {
 				l = propertyMap.get(s);
 				for(PropertyValues p : l) {
-					if(type.contentEquals("area")) {
-						total += p.getTotalLivableArea();
-					}
-					if(type.contentEquals("marketvalue")) {
-						total += p.getMaketValue();
-					}
+					total += getNumber(p, type);
 				}
 			}
 		}
@@ -53,20 +57,12 @@ public class PropertyProcessor implements Processor {
 	 }
 	 
 	 public int averageResidentialMarketValue(String zipCode) {
-		 return  Average("marketvalue", zipCode);
+		 return  Average("value", zipCode);
 	 }
 	 
 	 public int averageResidentialTotalLivableArea(String zipCode) {
 		 return  Average("area", zipCode);
 	 }
-	 
-	 public int totalResidentialMarketValuePerCapita(String zipCode, Map<String, Integer> populationMap){
-		 return totalResidentialPerCaptia(zipCode, populationMap, "value");
-	 }	
-    
-	 public int totalResidentialLivableAreaPerCapita(String zipCode, Map<String, Integer> populationMap){
-		 return totalResidentialPerCaptia(zipCode, populationMap, "area");
-	 }	
 	 
 	 public int totalResidentialPerCaptia(String zipCode, Map<String, Integer> populationMap, String type) {
 		 int average;
@@ -77,12 +73,7 @@ public class PropertyProcessor implements Processor {
 			if(s.equals(zipCode)) {
 				l = propertyMap.get(s);
 				for(PropertyValues p : l) {
-					if(type.contentEquals("area")) {
-						total += p.getTotalLivableArea();
-					}
-					if(type.contentEquals("value")) {
-						total += p.getMaketValue();
-					}
+					total += getNumber(p, type);
 				}
 			}
 		 }
@@ -97,4 +88,12 @@ public class PropertyProcessor implements Processor {
 	     average = total/population;
 		 return average;
 	 }
+	 
+	 public int totalResidentialMarketValuePerCapita(String zipCode, Map<String, Integer> populationMap){
+		 return totalResidentialPerCaptia(zipCode, populationMap, "value");
+	 }	
+    
+	 public int totalResidentialLivableAreaPerCapita(String zipCode, Map<String, Integer> populationMap){
+		 return totalResidentialPerCaptia(zipCode, populationMap, "area");
+	 }	
 }
