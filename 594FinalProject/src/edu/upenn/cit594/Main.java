@@ -59,7 +59,7 @@ public class Main {
 			violationReader = new ViolationCSVReader(parkingFile);
 		}
 		else if(format.equals("json")) {
-		violationReader = new ViolationJsonReader(parkingFile);
+			violationReader = new ViolationJsonReader(parkingFile);
 		}
 		
 		ViolationProcessor vProcessor = new ViolationProcessor(violationReader);

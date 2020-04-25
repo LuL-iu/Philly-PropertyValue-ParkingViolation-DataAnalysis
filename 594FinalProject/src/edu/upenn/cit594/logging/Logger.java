@@ -29,9 +29,7 @@ public class Logger {
 		filename = filenameFromUser;
 
 		try {
-			System.out.println("make file");
 			File f = new File(filename);
-			System.out.println(f.getAbsolutePath());
 			// check if file exists
 			//File file =new File("C://myfile.txt");
 //	    	  if(!f.exists()){
@@ -39,7 +37,7 @@ public class Logger {
 //	    	  }
 	    	  FileWriter fw = new FileWriter(f,true);
 	    	  BufferedWriter bw = new BufferedWriter(fw);
-	    	   out = new PrintWriter(bw);
+	    	  out = new PrintWriter(bw);
 	          //helps add new line to file content
 	    	  out.println("");
 		} catch (Exception e) {
@@ -47,14 +45,10 @@ public class Logger {
 		}
 	}
 
-	// method to print filename [mainly for testing]
-	public void printFileName() {
-		System.out.println(filename);
-	}
-
-	private String getFileName() {
-		return filename;
-	}
+//	// method to print filename [mainly for testing]
+//	public void printFileName() {
+//		System.out.println(filename);
+//	}
 
 	private static Logger instance = new Logger();
 

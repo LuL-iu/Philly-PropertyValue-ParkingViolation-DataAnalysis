@@ -21,6 +21,7 @@ public class UserInterface {
 	protected PropertyProcessor propertyProcessor;
 	protected Scanner in;
 	protected ErrorChecker EChecker = new ErrorChecker();
+	protected Map<String, Integer> populationMap;
 	
 	public UserInterface(PopulationProcessor populationProcessor, ViolationProcessor violationProcessor, PropertyProcessor propertyProcessor) {
 		this.populationProcessor = populationProcessor;
@@ -39,6 +40,7 @@ public class UserInterface {
 		populationProcessor.buildMap();
 		violationProcessor.buildMap();
 		propertyProcessor.buildMap();
+		populationMap = populationProcessor.getPopulationMap();
 		while(true) {
 			int choice = in.nextInt();
 			Logger logger = Logger.getInstance();
@@ -85,7 +87,6 @@ public class UserInterface {
 	}
 	
 	protected void displayParkingFinePerCapita() {
-		Map<String, Integer> populationMap = populationProcessor.getPopulationMap();
 		TreeMap<String, Double> finePerCapitia = violationProcessor.totalFinesPerCaptia(populationMap);
 		for(String s: finePerCapitia.keySet()) {
 			System.out.println(s + " " + finePerCapitia.get(s));
@@ -116,7 +117,6 @@ public class UserInterface {
 				average = propertyProcessor.averageResidentialTotalLivableArea(zipcode);
 			}
 			if(type.equals("MarketValuePerCapita")) {
-				Map<String, Integer> populationMap = populationProcessor.getPopulationMap();
 				average = propertyProcessor.totalResidentialMarketValuePerCapita(zipcode, populationMap);
 			}
 			if(type.equals("MarketValue")) {
@@ -128,7 +128,6 @@ public class UserInterface {
 	
 	private void displayTotalResidentialLivableAreaPerCapitaInHighestFineLocation() {
 		String highestFineZipcode = violationProcessor.getHighestFineLocation();
-		Map<String, Integer> populationMap = populationProcessor.getPopulationMap();
 		int average = propertyProcessor.totalResidentialLivableAreaPerCapita(highestFineZipcode, populationMap);
 		System.out.println("Zipcode with highest total parking fine is " + highestFineZipcode 
 				           + "\nThe total residential livable area per Capita in this location is " + average);
