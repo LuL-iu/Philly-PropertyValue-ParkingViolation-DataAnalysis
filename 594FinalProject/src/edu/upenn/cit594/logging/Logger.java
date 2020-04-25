@@ -14,6 +14,7 @@ import java.time.format.DateTimeFormatter;
  * @author Kai and Lu
  *
  */
+
 public class Logger {
 	private static String filename;
 	private PrintWriter out;
@@ -23,19 +24,19 @@ public class Logger {
 
 	
 
-	public void makeFile( String parkViolationFormat, String
-			parkingViolFile, String propertyValFile, String popFile, String logFile) {
+	public void makeFile(String filenameFromUser) {
 		
-		filename = logFile;
+		filename = filenameFromUser;
 
 		try {
+			System.out.println("make file");
 			File f = new File(filename);
-
+			System.out.println(f.getAbsolutePath());
 			// check if file exists
 			//File file =new File("C://myfile.txt");
-	    	  if(!f.exists()){
-	    	 	f.createNewFile();
-	    	  }
+//	    	  if(!f.exists()){
+	    	 	//f.createNewFile();
+//	    	  }
 	    	  FileWriter fw = new FileWriter(f,true);
 	    	  BufferedWriter bw = new BufferedWriter(fw);
 	    	   out = new PrintWriter(bw);
@@ -44,14 +45,12 @@ public class Logger {
 		} catch (Exception e) {
 			System.out.println("ERROR: in logger:  NO FILE CREATED");
 		}
-		programStart(parkViolationFormat,
-				parkingViolFile,  propertyValFile,  popFile,  logFile);
 	}
 
-//	// method to print filename [mainly for testing]
-//	public void printFileName() {
-//		System.out.println(filename);
-//	}
+	// method to print filename [mainly for testing]
+	public void printFileName() {
+		System.out.println(filename);
+	}
 
 	private String getFileName() {
 		return filename;
@@ -62,18 +61,6 @@ public class Logger {
 	public static Logger getInstance() {
 		return instance;
 	}
-
-	private void programStart (String parkViolationFormat, String
-			parkingViolFile, String propertyValFile, String popFile, String logFile) {
-		 out.println(System.currentTimeMillis() + " " + parkViolationFormat + " " + parkingViolFile
-				 +" " + propertyValFile + " " + popFile + " "+  logFile);
-	}
-	
-	
-	public void newInputFileRead(String fileOpened) {
-		 out.println(System.currentTimeMillis() + " " + fileOpened);
-	}
-	
 	// will log zipcode and selection
 	public void log(String msg) {
 		out.println(System.currentTimeMillis() + " " + msg);

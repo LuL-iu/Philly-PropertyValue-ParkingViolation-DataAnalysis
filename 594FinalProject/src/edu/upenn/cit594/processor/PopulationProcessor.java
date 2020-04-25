@@ -10,10 +10,11 @@ public class PopulationProcessor implements Processor{
 	 private PopulationReader populationReader;
 	 private Map<String, Integer> populationMap;
 	 
-	 public PopulationProcessor(PopulationReader populationReader, Logger log) {
+	 public PopulationProcessor(PopulationReader populationReader) {
 		 this.populationReader = populationReader;
 	 }
 	 
+	 @Override
 	 public void buildMap() {
 		 this.populationMap = populationReader.getDataFromFile();
 	 }

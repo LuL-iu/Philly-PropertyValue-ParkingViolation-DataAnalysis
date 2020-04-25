@@ -11,10 +11,11 @@ public class ViolationProcessor implements Processor{
 	 private Map<String, Double> violationMap;
 	 
 	 
-	 public ViolationProcessor(ViolationReader violationReader, Logger log) {
+	 public ViolationProcessor(ViolationReader violationReader) {
 		 this.violationReader = violationReader;
 	 }
 	 
+	 @Override
 	 public void buildMap() {
 		 this.violationMap = violationReader.getViolationMap();
 	 }

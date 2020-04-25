@@ -100,14 +100,17 @@ public class PropertyCSVReader implements Reader {
 		for (int i = 0; i < cells.length; i ++) {
 			if (i == total_livable_area) {
 				livableArea = cells[i];
+//				System.out.println("area : " + livableArea);
 			}
 			if(i == zip_code) {
 				zipcode = cells[i];
 				zipcode = zipcode.replaceAll("\\s", "");
-				zipcode = zipcode.replaceAll("\\-", "");		
+				zipcode = zipcode.replaceAll("\\-", "");
+//				System.out.println("zipcode : " + zipcode);
 			}
 			if(i == market_value) {
 				marketValue = cells[i];
+//				System.out.println("marketValue : " + marketValue);
 			}
 		}
 		

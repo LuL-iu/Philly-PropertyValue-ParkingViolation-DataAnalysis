@@ -30,43 +30,50 @@ public class UserInterface {
 	}
 	
 	public void start() {
-		System.out.println("Enter 0 to Exit\nEnter 1 to show total population for all ZIP codes\nEnter 2 to show total parking fines per capita for"
-				+ " each ZIP codes\nEnter 3 to show average market value for residents in specified ZIP code\nEnter 4 to1 show average total livavle area"
-				+ "for residents in specified ZIP code\nEnter 5 to show total residential market value per capita for specifed ZIP code\nEnter "
-				+ "6 to show the results of your custom feature");
+		System.out.println("Enter 0 to Exit\nEnter 1 to show total population for all ZIP codes\n"
+				+ "Enter 2 to show total parking fines per capita for each ZIP codes\n"
+				+ "Enter 3 to show average market value for residents in specified ZIP code\n"
+				+ "Enter 4 to1 show average total livavle area for residents in specified ZIP code\n"
+				+ "Enter 5 to show total residential market value per capita for specifed ZIP code\n"
+				+ "Enter 6 to show the total residential livable area Per Capita in zip code with highest total parking fine ");
 		populationProcessor.buildMap();
 		violationProcessor.buildMap();
 		propertyProcessor.buildMap();
 		while(true) {
 			int choice = in.nextInt();
 			Logger logger = Logger.getInstance();
-			logger.log( Integer.toString(choice));
+			logger.log(Integer.toString(choice));
 			if(choice == 0) {
 				break;
 			}
 			
-			if(choice == 1) {
+			else if(choice == 1) {
 				displayTotalPopulation();
 			}
 			
-			if(choice == 2) {
+			else if(choice == 2) {
 				displayParkingFinePerCapita();
 			}
 			
-			if(choice == 3) {
+			else if(choice == 3) {
 				displayAverageResidentialMarketValue();
 			}
 			
-			if(choice == 4) {
+			else if(choice == 4) {
 				displayAverageResidentialTotalLivableArea();
 			}
 			
-			if(choice == 5) {
+			else if(choice == 5) {
 				displayTotalResidentialMarketValuePerCapita();
 			}
 			
-			if(choice == 6) {
-				displayTotalResidentialMarketValuePerCapitaInHighestFineLocation();
+			else if(choice == 6) {
+				displayTotalResidentialLivableAreaPerCapitaInHighestFineLocation();
+			}
+			
+			else {
+				System.out.println("Error Input, program will exit");
+				break;
 			}
 		}
 		in.close();
@@ -119,11 +126,12 @@ public class UserInterface {
 		System.out.println(average);
 	}
 	
-	private void displayTotalResidentialMarketValuePerCapitaInHighestFineLocation() {
+	private void displayTotalResidentialLivableAreaPerCapitaInHighestFineLocation() {
 		String highestFineZipcode = violationProcessor.getHighestFineLocation();
 		Map<String, Integer> populationMap = populationProcessor.getPopulationMap();
 		int average = propertyProcessor.totalResidentialLivableAreaPerCapita(highestFineZipcode, populationMap);
-		System.out.println(average);
+		System.out.println("Zipcode with highest total parking fine is " + highestFineZipcode 
+				           + "\nThe total residential livable area per Capita in this location is " + average);
 	}
 
 }

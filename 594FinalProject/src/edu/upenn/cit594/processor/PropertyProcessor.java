@@ -16,11 +16,12 @@ public class PropertyProcessor implements Processor {
 	 private Map<String, List<PropertyValues>> propertyMap;
 	
 	 
-	 public PropertyProcessor(PropertyCSVReader propertyReader, Logger log) {
+	 public PropertyProcessor(PropertyCSVReader propertyReader) {
 		 this.propertyReader = propertyReader;
 	
 	 }
 	 
+	 @Override
 	 public void buildMap() {
 		 this.propertyMap = propertyReader.getPropertyMap();
 	 }

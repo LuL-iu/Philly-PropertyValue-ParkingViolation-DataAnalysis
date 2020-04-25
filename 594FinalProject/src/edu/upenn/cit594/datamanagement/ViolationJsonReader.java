@@ -34,7 +34,6 @@ public class ViolationJsonReader implements ViolationReader {
 		EChecker.checkReadability(filename);
 		File f = new File(filename);
 		try {
-
 			// create a parser
 			JSONParser parser = new JSONParser();
 			// open the file and get the array of JSON objects
