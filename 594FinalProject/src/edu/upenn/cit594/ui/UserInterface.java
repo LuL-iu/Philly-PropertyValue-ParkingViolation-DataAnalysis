@@ -34,7 +34,7 @@ public class UserInterface {
 		System.out.println("Enter 0 to Exit\nEnter 1 to show total population for all ZIP codes\n"
 				+ "Enter 2 to show total parking fines per capita for each ZIP codes\n"
 				+ "Enter 3 to show average market value for residents in specified ZIP code\n"
-				+ "Enter 4 to1 show average total livavle area for residents in specified ZIP code\n"
+				+ "Enter 4 to show average total livable area for residents in specified ZIP code\n"
 				+ "Enter 5 to show total residential market value per capita for specifed ZIP code\n"
 				+ "Enter 6 to show the total residential livable area Per Capita in zip code with highest total parking fine ");
 		populationProcessor.buildMap();
@@ -42,40 +42,80 @@ public class UserInterface {
 		propertyProcessor.buildMap();
 		populationMap = populationProcessor.getPopulationMap();
 		while(true) {
-			int choice = in.nextInt();
+//			int choice = in.nextInt();
+//			Logger logger = Logger.getInstance();
+//			logger.log(Integer.toString(choice));
+//			if(choice == 0) {
+//				break;
+//			}
+//			
+//			else if(choice == 1) {
+//				displayTotalPopulation();
+//			}
+//			
+//			else if(choice == 2) {
+//				displayParkingFinePerCapita();
+//			}
+//			
+//			else if(choice == 3) {
+//				displayAverageResidentialMarketValue();
+//			}
+//			
+//			else if(choice == 4) {
+//				displayAverageResidentialTotalLivableArea();
+//			}
+//			
+//			else if(choice == 5) {
+//				displayTotalResidentialMarketValuePerCapita();
+//			}
+//			
+//			else if(choice == 6) {
+//				displayTotalResidentialLivableAreaPerCapitaInHighestFineLocation();
+//			}
+//			
+//			else {
+//				System.out.println("Error Input, program will exit");
+//				//break;
+//				System.exit(0);
+//			}
+//		}
+//		in.close();
+			
+			String choice = in.next();
 			Logger logger = Logger.getInstance();
-			logger.log(Integer.toString(choice));
-			if(choice == 0) {
+			logger.log(choice);
+			if(choice.equals("0")) {
 				break;
 			}
 			
-			else if(choice == 1) {
+			else if(choice.equals("1")) {
 				displayTotalPopulation();
 			}
 			
-			else if(choice == 2) {
+			else if(choice.equals("2")) {
 				displayParkingFinePerCapita();
 			}
 			
-			else if(choice == 3) {
+			else if(choice.equals("3")) {
 				displayAverageResidentialMarketValue();
 			}
 			
-			else if(choice == 4) {
+			else if(choice.equals("4")) {
 				displayAverageResidentialTotalLivableArea();
 			}
 			
-			else if(choice == 5) {
+			else if(choice.equals("5")) {
 				displayTotalResidentialMarketValuePerCapita();
 			}
 			
-			else if(choice == 6) {
+			else if(choice.equals("6")) {
 				displayTotalResidentialLivableAreaPerCapitaInHighestFineLocation();
 			}
 			
 			else {
 				System.out.println("Error Input, program will exit");
-				break;
+				//break;
+				System.exit(0);
 			}
 		}
 		in.close();

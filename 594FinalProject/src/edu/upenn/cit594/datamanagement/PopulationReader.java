@@ -54,15 +54,15 @@ public class PopulationReader implements Reader{
 						}
 					}
 				} catch (NumberFormatException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					System.out.println("Error with populations file. Please try again");
+					System.exit(1);
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					System.out.println("Error with populations file. Please try again");
+					System.exit(1);
 				}
 			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				System.out.println("Error with populations file. Please try again");
+				System.exit(1);
 			} // Creation of File Reader object
             
 			
