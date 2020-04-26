@@ -15,7 +15,7 @@ import edu.upenn.cit594.logging.Logger;
 
 public class PopulationProcessor implements Processor{ 
 	 private PopulationReader populationReader;
-	 private Map<String, Integer> populationMap;
+	 private Map<String, Integer> populationMap;  
 	 
 	 public PopulationProcessor(PopulationReader populationReader) {
 		 this.populationReader = populationReader;

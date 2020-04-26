@@ -1,6 +1,5 @@
 package edu.upenn.cit594;
 
-
 import edu.upenn.cit594.datamanagement.PopulationReader;
 import edu.upenn.cit594.datamanagement.PropertyCSVReader;
 import edu.upenn.cit594.datamanagement.ViolationCSVReader;
@@ -13,66 +12,65 @@ import edu.upenn.cit594.processor.ViolationProcessor;
 import edu.upenn.cit594.ui.UserInterface;
 
 /**
- * this is a main class, which checks the form of arguments, read the arguments,  create other objects and their relationships, then start 
- * the application via the UI.
- *  @author Lu & Kai
- *  
+ * this is a main class, which checks the form of arguments, read the arguments,
+ * create other objects and their relationships, then start the application via
+ * the UI.
+ * 
+ * @author Lu & Kai
+ * 
  */
 
 public class Main {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		if(args.length != 5) {
-			System.out.println("Error, please enter argumnets again");
+		if (args.length != 5) {
+			System.out.println("Error, please enter arguments again");
 			System.exit(0);
 		}
-		String format = args[0];
-		format = format.toLowerCase();
-		if(!format.equals("json") && !format.equals("csv")){
-			System.out.println("Error, please enter right file format");
-			System.exit(0);
-		}
-		
-		//create the log file with file name provided by arguments
+		// create the log file with file name provided by arguments -- I moved up since suppose to log everything! eve
 		Logger logger = Logger.getInstance();
 		logger.makeFile(args[4]);
-		
-		//combine arguments to string
+
+		// combine arguments to string
 		String arguments = "";
-		for(String s : args) {
+		for (String s : args) {
 			arguments += s + " ";
-		}	
+		}
 		logger.log(arguments);
-		
+
+		String format = args[0];
+		format = format.toLowerCase();
+		if (!format.equals("json") && !format.equals("csv")) {
+			System.out.println("Error, please enter right file format");
+			System.exit(-1);
+		}
+
 		String parkingFile = args[1];
 		String propertyFile = args[2];
 		String populationFile = args[3];
-		String logFile = args[4];
-		
-		//create reader
+
+		// create reader
 		PropertyCSVReader propertyReader = new PropertyCSVReader(propertyFile);
 		PopulationReader populationReader = new PopulationReader(populationFile);
 		ViolationReader violationReader = null;
-		
-		
-		//create parkingFine Reader "txt" or "json" format
-		if(format.equals("csv")) {
+
+		// create parkingFine Reader "txt" or "json" format
+		if (format.equals("csv")) {
 			violationReader = new ViolationCSVReader(parkingFile);
-		}
-		else if(format.equals("json")) {
+		} else if (format.equals("json")) {
 			violationReader = new ViolationJsonReader(parkingFile);
 		}
-		
-		//create processor
+
+		// create processor
 		ViolationProcessor vProcessor = new ViolationProcessor(violationReader);
 		PopulationProcessor poProcessor = new PopulationProcessor(populationReader);
 		PropertyProcessor prProcessor = new PropertyProcessor(propertyReader);
-		
-		//creater ui and start 
+
+		// creater ui and start
 		UserInterface ui = new UserInterface(poProcessor, vProcessor, prProcessor);
 		ui.start();
-		
+
 	}
 
 }

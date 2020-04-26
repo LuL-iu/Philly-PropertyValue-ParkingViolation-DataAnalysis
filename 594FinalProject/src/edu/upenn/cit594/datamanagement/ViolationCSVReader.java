@@ -23,14 +23,13 @@ public class ViolationCSVReader implements Reader, ViolationReader {
 
 	// get data from CSV file
 	public HashMap<String, Double> getViolationMap() {
+		// log filename
+		Logger logger = Logger.getInstance();
+		logger.log(fileName);
 
 		// check file permissions and open
 		EChecker.checkReadability(fileName);
 		File f = new File(fileName);
-		
-		// log filename
-		Logger logger = Logger.getInstance();
-		logger.log(fileName);
 
 		Scanner scanner = null; // Get scanner instance
 
@@ -56,7 +55,7 @@ public class ViolationCSVReader implements Reader, ViolationReader {
 
 		} catch (Exception e) {
 			System.out.println("Error with csv parking file. Please try again");
-			System.exit(1);
+			System.exit(-1);
 		} finally {
 			scanner.close();
 		}

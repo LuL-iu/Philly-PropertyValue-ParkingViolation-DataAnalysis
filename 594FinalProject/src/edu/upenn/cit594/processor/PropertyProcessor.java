@@ -18,7 +18,7 @@ import edu.upenn.cit594.logging.Logger;
 
 public class PropertyProcessor implements Processor {
 	 protected PropertyCSVReader propertyReader;
-	 private Map<String, List<PropertyValues>> propertyMap;
+	 private Map<String, List<PropertyValues>> propertyMap;  
 	
 	 public PropertyProcessor(PropertyCSVReader propertyReader) {
 		 this.propertyReader = propertyReader;

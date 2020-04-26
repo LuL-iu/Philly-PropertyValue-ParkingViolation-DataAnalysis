@@ -23,26 +23,27 @@ public class Logger {
 	}
 
 	public void makeFile(String filenameFromUser) {
-		
+
 		filename = filenameFromUser;
 
 		try {
 			File f = new File(filename);
-	    	FileWriter fw = new FileWriter(f,true);
-	    	BufferedWriter bw = new BufferedWriter(fw);
-	    	out = new PrintWriter(bw);
-	        //helps add new line to file content
-	    	out.println("");
+			FileWriter fw = new FileWriter(f, true);
+			BufferedWriter bw = new BufferedWriter(fw);
+			out = new PrintWriter(bw);
+			// helps add new line to file content
+			out.println("");
 		} catch (Exception e) {
 			System.out.println("ERROR: in logger:  NO FILE CREATED");
 		}
 	}
-	
+
 	private static Logger instance = new Logger();
 
 	public static Logger getInstance() {
 		return instance;
 	}
+
 	// will log zipcode and selection
 	public void log(String msg) {
 		out.println(System.currentTimeMillis() + " " + msg);

@@ -14,7 +14,7 @@ import edu.upenn.cit594.logging.Logger;
 
 public class ViolationProcessor implements Processor{
 	 protected ViolationReader violationReader;  ;
-	 private Map<String, Double> violationMap;
+	 private Map<String, Double> violationMap;  
 	 
 	 
 	 public ViolationProcessor(ViolationReader violationReader) {

@@ -1,5 +1,4 @@
 
-
 package edu.upenn.cit594.datamanagement;
 
 import java.io.BufferedReader;
@@ -20,7 +19,7 @@ import edu.upenn.cit594.logging.Logger;
  */
 
 public class PropertyCSVReader implements Reader {
-	
+
 	protected String fileName;
 	private int total_livable_area, market_value, zip_code, countRow = 0;
 	private ErrorChecker EChecker = new ErrorChecker();
@@ -34,13 +33,14 @@ public class PropertyCSVReader implements Reader {
 	// get data from CSV file
 	@SuppressWarnings("resource")
 	public HashMap<String, List<PropertyValues>> getPropertyMap() {
-		// check file permissions and open
-		EChecker.checkReadability(fileName);
-		//log filename
 		Logger logger = Logger.getInstance();
 		logger.log(fileName);
-		
-		String line = null;														
+
+		// check file permissions and open
+		EChecker.checkReadability(fileName);
+		// log filename
+
+		String line = null;
 		try {
 			BufferedReader reader = null;
 			reader = new BufferedReader(new FileReader(fileName));
@@ -55,13 +55,13 @@ public class PropertyCSVReader implements Reader {
 		} catch (Exception e) {
 			// TODO Auto- generated catch block
 			System.out.println("ERROR CSVReader at ROW " + countRow + "  the following line:\n" + line);
-			System.exit(0);
+			System.exit(-1);
 		}
 
 		return propertyMap;
 	}
-    
-	//get the header column number of total livable area, market value and zip code
+
+	// get the header column number of total livable area, market value and zip code
 	protected void setUpHeaderVariablesResCSV(String csvLine) {
 		String[] header = csvLine.split(",");
 
@@ -79,34 +79,34 @@ public class PropertyCSVReader implements Reader {
 	}
 
 	protected void seperateDataForResCSV(String csvLine) {
-		//split the cell with "," ignore "," in " ";
+		// split the cell with "," ignore "," in " ";
 		String[] cells = csvLine.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
-		
+
 		String livableArea = " ";
 		String marketValue = " ";
 		String zipcode = " ";
-		//get data accordingly
-		for (int i = 0; i < cells.length; i ++) {
+		// get data accordingly
+		for (int i = 0; i < cells.length; i++) {
 			if (i == total_livable_area) {
 				livableArea = cells[i];
 			}
-			if(i == zip_code) {
+			if (i == zip_code) {
 				zipcode = cells[i];
 				zipcode = zipcode.replaceAll("\\s", "");
 				zipcode = zipcode.replaceAll("\\-", "");
 			}
-			if(i == market_value) {
+			if (i == market_value) {
 				marketValue = cells[i];
 			}
 		}
-		
-		if(EChecker.isValidZip(zipcode) && EChecker.isNumber(livableArea) && EChecker.isNumber(marketValue)) {
+
+		if (EChecker.isValidZip(zipcode) && EChecker.isNumber(livableArea) && EChecker.isNumber(marketValue)) {
 			zipcode = zipcode.substring(0, 5);
 			double lArea = Double.parseDouble(livableArea);
 			double mValue = Double.parseDouble(marketValue);
 			PropertyValues pValue = new PropertyValues(mValue, lArea);
 			List<PropertyValues> l = new ArrayList<PropertyValues>();
-			if(propertyMap.containsKey(zipcode)) {
+			if (propertyMap.containsKey(zipcode)) {
 				l = propertyMap.get(zipcode);
 			}
 			l.add(pValue);
@@ -127,4 +127,3 @@ public class PropertyCSVReader implements Reader {
 //		}
 //	}
 }
-

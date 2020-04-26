@@ -33,14 +33,15 @@ public class ViolationJsonReader implements ViolationReader {
 	// gets all data from file
 	@SuppressWarnings("rawtypes")
 	public HashMap<String, Double> getViolationMap() {
-		// check file permissions and open
-		EChecker.checkReadability(fileName);
-		File f = new File(fileName);
-		
+
 		// log filename
 		Logger logger = Logger.getInstance();
 		logger.log(fileName);
-		
+
+		// check file permissions and open
+		EChecker.checkReadability(fileName);
+		File f = new File(fileName);
+
 		try {
 			// create a parser
 			JSONParser parser = new JSONParser();
@@ -69,6 +70,7 @@ public class ViolationJsonReader implements ViolationReader {
 
 		} catch (Exception e) {
 			System.out.println("ERROR: with json file. Please try again");
+			System.exit(-1);
 
 		}
 		return zipcodesWithParking;
@@ -81,6 +83,5 @@ public class ViolationJsonReader implements ViolationReader {
 		}
 		zipcodesWithParking.put(zip_code, fine);
 	}
-
 
 }
