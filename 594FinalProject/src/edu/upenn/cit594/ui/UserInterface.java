@@ -146,7 +146,7 @@ public class UserInterface {
 	private void displayTotalResidentialLivableAreaPerCapitaInHighestFineLocation() {
 		String highestFineZipcode = violationProcessor.getHighestFineLocation();
 		int average = propertyProcessor.totalResidentialLivableAreaPerCapita(highestFineZipcode, populationMap);
-		System.out.println("ZIP code with highest total parking fine is " + highestFineZipcode 
+		System.out.println("ZIP code with the highest total parking fine is " + highestFineZipcode 
 				           + "\nThe total residential livable area per Capita in this location is " + average);
 	}
 
