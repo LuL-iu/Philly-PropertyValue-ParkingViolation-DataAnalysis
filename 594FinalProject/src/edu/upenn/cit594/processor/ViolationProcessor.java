@@ -1,5 +1,6 @@
 package edu.upenn.cit594.processor;
 
+import java.text.DecimalFormat;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -34,6 +35,7 @@ public class ViolationProcessor implements Processor{
 			 if(population != 0 && fine != 0) {
 				 double finePerCapita = fine/population;
 				 finePerCapita = Math.floor(finePerCapita * 10000)/10000;
+	
 				 totalFinesPerCapita.put(s, finePerCapita); 
 			 }
 		 }

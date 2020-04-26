@@ -1,5 +1,6 @@
 package edu.upenn.cit594.ui;
 
+import java.text.DecimalFormat;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.TreeMap;
@@ -42,45 +43,6 @@ public class UserInterface {
 		propertyProcessor.buildMap();
 		populationMap = populationProcessor.getPopulationMap();
 		while(true) {
-//			int choice = in.nextInt();
-//			Logger logger = Logger.getInstance();
-//			logger.log(Integer.toString(choice));
-//			if(choice == 0) {
-//				break;
-//			}
-//			
-//			else if(choice == 1) {
-//				displayTotalPopulation();
-//			}
-//			
-//			else if(choice == 2) {
-//				displayParkingFinePerCapita();
-//			}
-//			
-//			else if(choice == 3) {
-//				displayAverageResidentialMarketValue();
-//			}
-//			
-//			else if(choice == 4) {
-//				displayAverageResidentialTotalLivableArea();
-//			}
-//			
-//			else if(choice == 5) {
-//				displayTotalResidentialMarketValuePerCapita();
-//			}
-//			
-//			else if(choice == 6) {
-//				displayTotalResidentialLivableAreaPerCapitaInHighestFineLocation();
-//			}
-//			
-//			else {
-//				System.out.println("Error Input, program will exit");
-//				//break;
-//				System.exit(0);
-//			}
-//		}
-//		in.close();
-			
 			String choice = in.next();
 			Logger logger = Logger.getInstance();
 			logger.log(choice);
@@ -129,7 +91,9 @@ public class UserInterface {
 	protected void displayParkingFinePerCapita() {
 		TreeMap<String, Double> finePerCapitia = violationProcessor.totalFinesPerCaptia(populationMap);
 		for(String s: finePerCapitia.keySet()) {
-			System.out.println(s + " " + finePerCapitia.get(s));
+			Double finePerCapitita = finePerCapitia.get(s);
+			DecimalFormat df = new DecimalFormat("0.0000");
+			System.out.println(s + " " + df.format(df));
 		}
 	}
 	
