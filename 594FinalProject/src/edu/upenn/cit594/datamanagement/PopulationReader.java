@@ -8,72 +8,60 @@ import java.util.HashMap;
 import java.util.Map;
 
 import edu.upenn.cit594.logging.Logger;
-
+/**
+ * this is reader class, read the population file and add the population to population map
+ * 
+ *  @author Kai & Lu
+ *  
+ */
 public class PopulationReader implements Reader{
-	protected String filename;
+	protected String fileName;
 	private Map<String, Integer> zipCodePopulations;
 	private ErrorChecker EChecker = new ErrorChecker();
-
+	
 	public PopulationReader(String name) {
-		filename = name;
+		fileName = name;
 	}
 
-	// gets all data from text file
+	// create population map, key is zip code
 	public Map<String, Integer> getDataFromFile() {
 		zipCodePopulations = new HashMap<String, Integer>();
-
 		// check file permissions and open
-
-		
-			// File file = new File(filename); // Creation of File Descriptor for input file
-			File f = new File(filename);
-			
-			//log filename
-			Logger logger = Logger.getInstance();
-			logger.log(filename);
-			
-			FileReader fileReader;
+        EChecker.checkReadability(fileName);
+		// File file = new File(filename); // Creation of File Descriptor for input file
+		File f = new File(fileName);
+		//log filename
+		Logger logger = Logger.getInstance();
+		logger.log(fileName);
+		try {
+			FileReader fileReader = new FileReader(f);
+			BufferedReader br = new BufferedReader(fileReader); // Creation of BufferedReader object
+			String line;
 			try {
-				fileReader = new FileReader(f);
-				BufferedReader br = new BufferedReader(fileReader); // Creation of BufferedReader object
-
-				String line;
-				try {
-					while ((line = br.readLine()) != null) {
-						String lineSplit[] = line.split(" ");
-						String zipcode = lineSplit[0];
-						String population = lineSplit[1];
-						zipcode = zipcode.replaceAll("\\s", "");
-						if(EChecker.isValidZip(zipcode) && EChecker.isNumber(population)) {
-							int pNumber = Integer.parseInt(population); 
-							if(zipCodePopulations.containsKey(zipcode)) {
-								int n = zipCodePopulations.get(zipcode);
-								pNumber += n;
-							}
-							zipCodePopulations.put(zipcode, pNumber);
+				while ((line = br.readLine()) != null) {
+					String lineSplit[] = line.split(" ");
+					String zipcode = lineSplit[0];
+					String population = lineSplit[1];
+					zipcode = zipcode.replaceAll("\\s", "");
+					//check whether zip code is valid and population is a integer
+					if(EChecker.isValidZip(zipcode) && EChecker.isInteger(population)) {
+						int pNumber = Integer.parseInt(population); 
+						if(zipCodePopulations.containsKey(zipcode)) {
+							int n = zipCodePopulations.get(zipcode);
+							pNumber += n;
 						}
+						zipCodePopulations.put(zipcode, pNumber);
 					}
-				} catch (NumberFormatException e) {
-					System.out.println("Error with populations file. Please try again");
-					System.exit(1);
-				} catch (IOException e) {
-					System.out.println("Error with populations file. Please try again");
-					System.exit(1);
 				}
-			} catch (FileNotFoundException e) {
+			} catch (IOException e) {
 				System.out.println("Error with populations file. Please try again");
 				System.exit(1);
-			} // Creation of File Reader object
-            
-			
-	
+			}
+		} catch (FileNotFoundException e) {
+			System.out.println("Error with populations file. Please try again");
+			System.exit(1);
+		} // Creation of File Reader object
 		return zipCodePopulations;
-
-	}
-
-	private Logger getinstance() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 	
 //	public static void main(String[] args) {

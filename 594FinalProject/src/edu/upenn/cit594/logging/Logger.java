@@ -22,34 +22,22 @@ public class Logger {
 	private Logger() {
 	}
 
-	
-
 	public void makeFile(String filenameFromUser) {
 		
 		filename = filenameFromUser;
 
 		try {
 			File f = new File(filename);
-			// check if file exists
-			//File file =new File("C://myfile.txt");
-//	    	  if(!f.exists()){
-	    	 	//f.createNewFile();
-//	    	  }
-	    	  FileWriter fw = new FileWriter(f,true);
-	    	  BufferedWriter bw = new BufferedWriter(fw);
-	    	  out = new PrintWriter(bw);
-	          //helps add new line to file content
-	    	  out.println("");
+	    	FileWriter fw = new FileWriter(f,true);
+	    	BufferedWriter bw = new BufferedWriter(fw);
+	    	out = new PrintWriter(bw);
+	        //helps add new line to file content
+	    	out.println("");
 		} catch (Exception e) {
 			System.out.println("ERROR: in logger:  NO FILE CREATED");
 		}
 	}
-
-//	// method to print filename [mainly for testing]
-//	public void printFileName() {
-//		System.out.println(filename);
-//	}
-
+	
 	private static Logger instance = new Logger();
 
 	public static Logger getInstance() {

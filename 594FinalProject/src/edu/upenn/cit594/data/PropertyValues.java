@@ -1,5 +1,11 @@
 package edu.upenn.cit594.data;
 
+/**
+ * this is a data type class, store the market value and total livable area into combined object
+ * 
+ *  @author Lu & Kai
+ *  
+ */
 public class PropertyValues {
 	private double maketValue;
 	private double totalLivableArea;

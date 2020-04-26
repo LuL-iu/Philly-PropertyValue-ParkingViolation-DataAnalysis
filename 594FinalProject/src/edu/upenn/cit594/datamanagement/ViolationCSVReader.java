@@ -2,52 +2,53 @@ package edu.upenn.cit594.datamanagement;
 
 import java.io.File;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
 import java.util.Scanner;
-import java.util.TreeMap;
-
 import edu.upenn.cit594.logging.Logger;
 
-@SuppressWarnings("rawtypes")
+/**
+ * violation CSV file reader opens parking file and read data to violation Map
+ * 
+ * @author Kai and Lu
+ *
+ */
+
 public class ViolationCSVReader implements Reader, ViolationReader {
-	protected String filename;
-	private TreeMap<String, Double> zipcodesWithParking = new TreeMap();
+	protected String fileName;
+	private HashMap<String, Double> zipcodesWithParking = new HashMap<String, Double>();
 	private ErrorChecker EChecker = new ErrorChecker();
 
 	public ViolationCSVReader(String name) {
-		filename = name;
+		fileName = name;
 	}
 
 	// get data from CSV file
-	public TreeMap<String, Double> getViolationMap() {
+	public HashMap<String, Double> getViolationMap() {
+
+		// check file permissions and open
+		EChecker.checkReadability(fileName);
+		File f = new File(fileName);
+		
 		// log filename
 		Logger logger = Logger.getInstance();
-		logger.log(filename);
+		logger.log(fileName);
 
 		Scanner scanner = null; // Get scanner instance
 
-		// check file permissions and open
-		EChecker.checkReadability(filename);
-		File f = new File(filename);
-
 		try {
-
 			scanner = new Scanner(f); // new File(filename));
 			// Set the delimiter used in file
 			scanner.useDelimiter(",|\\\n");
-
 			while (scanner.hasNext()) {
 				scanner.next(); // 0
 				String fine = scanner.next();
 				scanner.next(); // 2
 				scanner.next(); // 3
 				String state = scanner.next(); // 4
-				// System.out.println(state);
 				scanner.next(); // 5
 				String zipcode = scanner.next(); // 6
 				zipcode = zipcode.replaceAll("\\s", "");
-				if (EChecker.is5DigitZip(zipcode) && state.contentEquals("PA") && EChecker.isNumber(fine)) {
+				zipcode = zipcode.replaceAll("\\-", "");
+				if (EChecker.isValidZip(zipcode) && state.contentEquals("PA") && EChecker.isNumber(fine)) {
 					Double fineValue = Double.parseDouble(fine);
 					fillInMap(zipcode, fineValue);
 				}
@@ -65,6 +66,7 @@ public class ViolationCSVReader implements Reader, ViolationReader {
 
 	// this is repeated from json maybe should be placed into Reader?
 	protected void fillInMap(String zip_code, double fine) {
+		zip_code = zip_code.substring(0, 5);
 		if (zipcodesWithParking.containsKey(zip_code)) {
 			fine += zipcodesWithParking.get(zip_code);
 		}

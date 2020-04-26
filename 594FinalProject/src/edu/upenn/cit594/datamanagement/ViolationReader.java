@@ -1,12 +1,11 @@
 package edu.upenn.cit594.datamanagement;
 
-
-import java.util.Map;
+import java.util.HashMap;
 
 
 
 public interface ViolationReader extends Reader{
 
-	public Map<String, Double> getViolationMap();
+	public HashMap<String, Double> getViolationMap();
 
 }

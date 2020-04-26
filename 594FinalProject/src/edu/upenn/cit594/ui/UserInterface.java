@@ -13,7 +13,7 @@ import edu.upenn.cit594.processor.ViolationProcessor;
 
 /**
  * this is user interface class, it is responsible for the interacting with user and processing data as it relates to display it.
- *
+ * @author Lu & Kai
  */
 
 public class UserInterface {
@@ -32,16 +32,21 @@ public class UserInterface {
 	}
 	
 	public void start() {
+		//display options to screen;
 		System.out.println("Enter 0 to Exit\nEnter 1 to show total population for all ZIP codes\n"
 				+ "Enter 2 to show total parking fines per capita for each ZIP codes\n"
 				+ "Enter 3 to show average market value for residents in specified ZIP code\n"
 				+ "Enter 4 to show average total livable area for residents in specified ZIP code\n"
 				+ "Enter 5 to show total residential market value per capita for specifed ZIP code\n"
 				+ "Enter 6 to show the total residential livable area Per Capita in zip code with highest total parking fine ");
+		
+		//set up data map in processor(start to read data from the 3 files)
 		populationProcessor.buildMap();
 		violationProcessor.buildMap();
 		propertyProcessor.buildMap();
 		populationMap = populationProcessor.getPopulationMap();
+		
+		//run different methods based on user input
 		while(true) {
 			String choice = in.next();
 			Logger logger = Logger.getInstance();
@@ -83,38 +88,45 @@ public class UserInterface {
 		in.close();
 	}
 	
+	//display total population to screen
 	protected void displayTotalPopulation() { 
 		int totalPopulation = populationProcessor.totalPopulation();
 		System.out.println("Total population is " + totalPopulation);
 	}
 	
+	//display parking fine per capita to screen
 	protected void displayParkingFinePerCapita() {
-		TreeMap<String, Double> finePerCapitia = violationProcessor.totalFinesPerCaptia(populationMap);
+		TreeMap<String, Double> finePerCapitia = violationProcessor.totalFinesPerCapita(populationMap);
 		for(String s: finePerCapitia.keySet()) {
+			//format the number with 4 decimal digits
 			Double finePerCapitita = finePerCapitia.get(s);
 			DecimalFormat df = new DecimalFormat("0.0000");
-			System.out.println(s + " " + df.format(df));
+			System.out.println(s + " " + df.format(finePerCapitita));
 		}
 	}
 	
+	//display average residential market value 
 	protected void displayAverageResidentialMarketValue() {
 		displayAverage("MarketValue");
 	}
 	
+	//display average residential livable area
 	protected void displayAverageResidentialTotalLivableArea() {
 		displayAverage("LivableArea");
 	}
 	
+	//display total residential livable area per capita
 	protected void displayTotalResidentialMarketValuePerCapita() {
 		displayAverage("MarketValuePerCapita");
 	}
 	
+	//common methods shared by 3 methods, strategy pattern
 	private void displayAverage(String type) {
 		Logger logger = Logger.getInstance();
 		System.out.println("Enter a ZIP code");
 		int average = 0; 
 		String zipcode = in.next();
-		zipcode.replaceAll("\\s",  "");
+		//if the input is the right format zip code, processing the data and display the results
 		if(EChecker.is5DigitZip(zipcode)) {
 			logger.log(zipcode);
 			if(type.equals("LivableArea")) {
@@ -130,6 +142,7 @@ public class UserInterface {
 		System.out.println(average);
 	}
 	
+	//display the total residential livable area per capita in the zipcode location with highest total parking fine
 	private void displayTotalResidentialLivableAreaPerCapitaInHighestFineLocation() {
 		String highestFineZipcode = violationProcessor.getHighestFineLocation();
 		int average = propertyProcessor.totalResidentialLivableAreaPerCapita(highestFineZipcode, populationMap);

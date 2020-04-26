@@ -13,49 +13,42 @@ import edu.upenn.cit594.data.PropertyValues;
 import edu.upenn.cit594.logging.Logger;
 
 /**
- * CSV file reader opens CSV states
+ * CSV file reader opens CSV properties and read data to Property Map
  * 
  * @author Kai and Lu
  *
  */
-@SuppressWarnings("rawtypes")
 
 public class PropertyCSVReader implements Reader {
-	protected String filename;
+	
+	protected String fileName;
 	private int total_livable_area, market_value, zip_code, countRow = 0;
-	private ErrorChecker ECheck = new ErrorChecker();
+	private ErrorChecker EChecker = new ErrorChecker();
 	private HashMap<String, List<PropertyValues>> propertyMap;
 
 	public PropertyCSVReader(String name) {
-		filename = name;
-		propertyMap = new HashMap();
+		fileName = name;
+		propertyMap = new HashMap<String, List<PropertyValues>>();
 	}
 
 	// get data from CSV file
 	@SuppressWarnings("resource")
 	public HashMap<String, List<PropertyValues>> getPropertyMap() {
-		
+		// check file permissions and open
+		EChecker.checkReadability(fileName);
 		//log filename
 		Logger logger = Logger.getInstance();
-		logger.log(filename);
+		logger.log(fileName);
 		
-		//countRow = 0; // this is for error checking
 		String line = null;														
-		// Scanner scanner = null; // Get scanner instance
-
-		// check file permissions and open
-		// File f = checkReadability(filename);
 		try {
 			BufferedReader reader = null;
-			reader = new BufferedReader(new FileReader(filename));
-			//String line = null;
+			reader = new BufferedReader(new FileReader(fileName));
 			if ((line = reader.readLine()) != null) {
-				//System.out.println(line);
 				setUpHeaderVariablesResCSV(line);
 				countRow++;
 			}
 			while ((line = reader.readLine()) != null) {
-				//System.out.println(line);
 				seperateDataForResCSV(line);
 				countRow++;
 			}
@@ -67,59 +60,52 @@ public class PropertyCSVReader implements Reader {
 
 		return propertyMap;
 	}
-
+    
+	//get the header column number of total livable area, market value and zip code
 	protected void setUpHeaderVariablesResCSV(String csvLine) {
-
 		String[] header = csvLine.split(",");
 
 		for (int k = 0; k < header.length; k++) {
 			if (header[k].equals("total_livable_area")) {
 				total_livable_area = k;
-				//System.out.println("livable head = " + k);
 			}
 			if (header[k].equals("market_value")) {
 				market_value = k;
-				//System.out.println("market_value = " + k);
 			}
 			if (header[k].equals("zip_code")) {
 				zip_code = k;
-				//System.out.println("zip_code = " + k);
 			}
 		}
 	}
 
-	// we can also use REGEX:
-	// https://stackoverflow.com/questions/11456850/split-a-string-by-commas-but-ignore-commas-within-double-quotes-using-javascript
-	// or possibly "/'[^']+'|[^,]+/"
 	protected void seperateDataForResCSV(String csvLine) {
+		//split the cell with "," ignore "," in " ";
 		String[] cells = csvLine.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
-		//System.out.println(cells.length);
+		
 		String livableArea = " ";
 		String marketValue = " ";
 		String zipcode = " ";
+		//get data accordingly
 		for (int i = 0; i < cells.length; i ++) {
 			if (i == total_livable_area) {
 				livableArea = cells[i];
-//				System.out.println("area : " + livableArea);
 			}
 			if(i == zip_code) {
 				zipcode = cells[i];
 				zipcode = zipcode.replaceAll("\\s", "");
 				zipcode = zipcode.replaceAll("\\-", "");
-//				System.out.println("zipcode : " + zipcode);
 			}
 			if(i == market_value) {
 				marketValue = cells[i];
-//				System.out.println("marketValue : " + marketValue);
 			}
 		}
 		
-		if(ECheck.isValidZip(zipcode) && ECheck.isNumber(livableArea) && ECheck.isNumber(marketValue)) {
+		if(EChecker.isValidZip(zipcode) && EChecker.isNumber(livableArea) && EChecker.isNumber(marketValue)) {
 			zipcode = zipcode.substring(0, 5);
 			double lArea = Double.parseDouble(livableArea);
 			double mValue = Double.parseDouble(marketValue);
 			PropertyValues pValue = new PropertyValues(mValue, lArea);
-			List<PropertyValues> l = new ArrayList();
+			List<PropertyValues> l = new ArrayList<PropertyValues>();
 			if(propertyMap.containsKey(zipcode)) {
 				l = propertyMap.get(zipcode);
 			}

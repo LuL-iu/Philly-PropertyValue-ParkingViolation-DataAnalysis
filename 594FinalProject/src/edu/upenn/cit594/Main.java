@@ -8,15 +8,15 @@ import edu.upenn.cit594.datamanagement.ViolationJsonReader;
 import edu.upenn.cit594.datamanagement.ViolationReader;
 import edu.upenn.cit594.logging.Logger;
 import edu.upenn.cit594.processor.PopulationProcessor;
-import edu.upenn.cit594.processor.Processor;
 import edu.upenn.cit594.processor.PropertyProcessor;
 import edu.upenn.cit594.processor.ViolationProcessor;
 import edu.upenn.cit594.ui.UserInterface;
-// check json
+
 /**
  * this is a main class, which checks the form of arguments, read the arguments,  create other objects and their relationships, then start 
  * the application via the UI.
  *  @author Lu & Kai
+ *  
  */
 
 public class Main {
@@ -38,6 +38,7 @@ public class Main {
 		Logger logger = Logger.getInstance();
 		logger.makeFile(args[4]);
 		
+		//combine arguments to string
 		String arguments = "";
 		for(String s : args) {
 			arguments += s + " ";
@@ -49,6 +50,7 @@ public class Main {
 		String populationFile = args[3];
 		String logFile = args[4];
 		
+		//create reader
 		PropertyCSVReader propertyReader = new PropertyCSVReader(propertyFile);
 		PopulationReader populationReader = new PopulationReader(populationFile);
 		ViolationReader violationReader = null;
@@ -62,12 +64,15 @@ public class Main {
 			violationReader = new ViolationJsonReader(parkingFile);
 		}
 		
+		//create processor
 		ViolationProcessor vProcessor = new ViolationProcessor(violationReader);
 		PopulationProcessor poProcessor = new PopulationProcessor(populationReader);
 		PropertyProcessor prProcessor = new PropertyProcessor(propertyReader);
+		
+		//creater ui and start 
 		UserInterface ui = new UserInterface(poProcessor, vProcessor, prProcessor);
 		ui.start();
-
+		
 	}
 
 }
