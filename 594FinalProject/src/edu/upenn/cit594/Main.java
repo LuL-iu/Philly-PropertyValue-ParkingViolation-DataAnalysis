@@ -16,6 +16,7 @@ import edu.upenn.cit594.ui.UserInterface;
 /**
  * this is a main class, which checks the form of arguments, read the arguments,  create other objects and their relationships, then start 
  * the application via the UI.
+ *  @author Lu & Kai
  */
 
 public class Main {
