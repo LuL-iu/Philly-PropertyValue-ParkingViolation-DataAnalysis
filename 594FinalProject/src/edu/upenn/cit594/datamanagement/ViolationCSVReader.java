@@ -54,7 +54,8 @@ public class ViolationCSVReader implements Reader, ViolationReader {
 			}
 
 		} catch (Exception e) {
-			// throw new IllegalStateException(e);
+			System.out.println("Error with csv parking file. Please try again");
+			System.exit(1);
 		} finally {
 			scanner.close();
 		}

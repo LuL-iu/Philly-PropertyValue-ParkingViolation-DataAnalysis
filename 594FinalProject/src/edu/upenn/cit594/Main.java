@@ -34,6 +34,16 @@ public class Main {
 			System.exit(0);
 		}
 		
+		//create the log file with file name provided by arguments
+		Logger logger = Logger.getInstance();
+		logger.makeFile(args[4]);
+		
+		String arguments = "";
+		for(String s : args) {
+			arguments += s + " ";
+		}	
+		logger.log(arguments);
+		
 		String parkingFile = args[1];
 		String propertyFile = args[2];
 		String populationFile = args[3];
@@ -43,17 +53,6 @@ public class Main {
 		PopulationReader populationReader = new PopulationReader(populationFile);
 		ViolationReader violationReader = null;
 		
-		//create the log file with file name provided by arguments
-//		GlobalName logName = GlobalName.getInstance();
-//		logName.setName(logFile);
-		Logger logger = Logger.getInstance();
-//		logger.makeFile(logFile);
-		logger.makeFile(logFile);
-		String arguments = "";
-		for(String s : args) {
-			arguments += s + " ";
-		}	
-		logger.log(arguments);
 		
 		//create parkingFine Reader "txt" or "json" format
 		if(format.equals("csv")) {

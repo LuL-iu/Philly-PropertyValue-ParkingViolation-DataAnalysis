@@ -63,7 +63,7 @@ public class ViolationJsonReader implements ViolationReader {
 			}
 
 		} catch (Exception e) {
-			System.out.println("ERROR: jsonReader");
+			System.out.println("ERROR: with json file. Please try again");
 
 		}
 //		System.out.println("THE COUNT IS " + count);
