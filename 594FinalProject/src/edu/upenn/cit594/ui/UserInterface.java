@@ -87,6 +87,7 @@ public class UserInterface {
 			else if (choice.equals("5")) {
 				displayTotalResidentialMarketValuePerCapita();
 			}
+			
 
 			else if (choice.equals("6")) {
 				displayTotalResidentialLivableAreaPerCapitaInHighestFineLocation();
@@ -97,6 +98,7 @@ public class UserInterface {
 				// break;
 				System.exit(0);
 			}
+			System.out.println("\nPlease Enter Your Next Option: ");
 		}
 		in.close();
 	}
@@ -140,7 +142,7 @@ public class UserInterface {
 		displayAverage("MarketValuePerCapita");
 	}
 
-	// common methods shared by 3 methods, strategy pattern
+	// common methods shared by 3 methods
 	private void displayAverage(String type) {
 		Logger logger = Logger.getInstance();
 		System.out.println("Enter a ZIP code");

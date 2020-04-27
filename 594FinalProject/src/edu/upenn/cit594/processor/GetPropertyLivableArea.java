@@ -6,5 +6,5 @@ public class GetPropertyLivableArea implements GetPropertyValue {
 	@Override
 	public double getValue(PropertyValues p) {
 		return p.getTotalLivableArea();
-	};
+	}
 }

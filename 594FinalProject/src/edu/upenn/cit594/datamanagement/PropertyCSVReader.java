@@ -79,9 +79,10 @@ public class PropertyCSVReader implements Reader {
 	}
 
 	protected void seperateDataForResCSV(String csvLine) {
-		// split the cell with "," ignore "," in " ";
-		String[] cells = csvLine.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
-
+		// replace the comma in quotes with ";" then use comma to split the string 
+		String newCSVLine = replaceCommaInQuotes(csvLine);
+		String[] cells = newCSVLine.split(",");
+//		String[] cells = csvLine.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
 		String livableArea = " ";
 		String marketValue = " ";
 		String zipcode = " ";
@@ -112,6 +113,24 @@ public class PropertyCSVReader implements Reader {
 			l.add(pValue);
 			propertyMap.put(zipcode, l);
 		}
+	}
+	
+	//replace the comma in quotes with ";"
+	public String replaceCommaInQuotes(String s) {
+		for(int i = 0; i < s.length(); i ++) {
+			if(s.charAt(i) == '"') {
+				for(int a = i + 1; a < s.length(); a ++) {	
+					if(s.charAt(a) == '"') {
+						String subString = s.substring(i,a);
+						subString = subString.replaceAll(",", ";");
+						s = s.substring(0,i) + subString + s.substring(a);
+						i = a;
+						break;
+					}
+				}
+			}
+		}
+		return s;
 	}
 
 //	public static void main(String[] args) {

@@ -6,5 +6,5 @@ public class GetPropertyMarketValue implements GetPropertyValue{
 	@Override
 	public double getValue(PropertyValues p) {
 		return p.getMaketValue();
-	};
+	}
 }
