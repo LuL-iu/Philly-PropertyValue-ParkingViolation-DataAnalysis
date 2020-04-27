@@ -46,7 +46,8 @@ public class UserInterface {
 
 	public void start() {
 		// display options to screen;
-		System.out.println("Enter 0 to Exit\nEnter 1 to show total population for all ZIP codes\n"
+		System.out.println("Enter 0 to Exit\n"
+				+ "Enter 1 to show total population for all ZIP codes\n"
 				+ "Enter 2 to show total parking fines per capita for each ZIP codes\n"
 				+ "Enter 3 to show average market value for residents in specified ZIP code\n"
 				+ "Enter 4 to show average total livable area for residents in specified ZIP code\n"
