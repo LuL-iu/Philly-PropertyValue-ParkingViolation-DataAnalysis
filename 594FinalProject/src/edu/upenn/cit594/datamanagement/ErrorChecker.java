@@ -76,10 +76,10 @@ public class ErrorChecker {
 		return false;
 	}
 
-	public static void main(String[] args) {
-	// TODO Auto-generated method stub
-	String fileName = "population.txt";
-	ErrorChecker eCheck = new ErrorChecker();
-	System.out.println(eCheck.checkReadability(fileName));
-	}
+//	public static void main(String[] args) {
+//	// TODO Auto-generated method stub
+//	String fileName = "population.txt";
+//	ErrorChecker eCheck = new ErrorChecker();
+//	System.out.println(eCheck.checkReadability(fileName));
+//	}
 }
