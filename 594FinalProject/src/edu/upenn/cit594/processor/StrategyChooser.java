@@ -7,7 +7,7 @@ import edu.upenn.cit594.data.PropertyValues;
 import edu.upenn.cit594.datamanagement.PropertyCSVReader;
 import edu.upenn.cit594.data.PropertyValues;
 
-public class Context implements Processor {
+public class StrategyChooser implements Processor {
 	protected Map<String, List<PropertyValues>> propertyMap;
 	private Strategy strategy;
 	private PropertyCSVReader propertyReader;
@@ -18,7 +18,7 @@ public class Context implements Processor {
 		this.propertyMap = propertyReader.getPropertyMap();
 	}
 
-	public Context(PropertyCSVReader propertyReader) {
+	public StrategyChooser(PropertyCSVReader propertyReader) {
 		this.propertyReader = propertyReader;
 		// buildMap(); // build propertyMap
 	}

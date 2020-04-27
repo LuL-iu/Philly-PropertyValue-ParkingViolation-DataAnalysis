@@ -10,12 +10,13 @@ import java.util.TreeMap;
 
 import edu.upenn.cit594.processor.AverageMarketValStrategyPattern;
 import edu.upenn.cit594.processor.AverageResidentiatTotalLivableAreaStrategyPattern;
-import edu.upenn.cit594.processor.Context;
+
 
 import edu.upenn.cit594.datamanagement.ErrorChecker;
 import edu.upenn.cit594.logging.Logger;
 import edu.upenn.cit594.processor.PopulationProcessor;
 import edu.upenn.cit594.processor.Strategy;
+import edu.upenn.cit594.processor.StrategyChooser;
 import edu.upenn.cit594.processor.TotalResidentialMarketValuePerCapitaStrategyPattern;
 import edu.upenn.cit594.processor.LivableAreaPerCapitaStrategyPattern;
 import edu.upenn.cit594.processor.ViolationProcessor;
@@ -31,7 +32,7 @@ public class UserInterface {
 	protected PopulationProcessor populationProcessor;
 	protected ViolationProcessor violationProcessor;
 	// protected PropertyProcessor propertyProcessor;
-	protected Context propertyProcessor;
+	protected StrategyChooser propertyProcessor;
 	protected Scanner in;
 	protected ErrorChecker EChecker = new ErrorChecker();
 	protected Map<String, Integer> populationMap;
@@ -45,7 +46,7 @@ public class UserInterface {
 	ArrayList<Integer> additionalFeatureResult = new ArrayList<Integer>();
 
 	public UserInterface(PopulationProcessor populationProcessor, ViolationProcessor violationProcessor,
-			Context propertyProcessor) {
+			StrategyChooser propertyProcessor) {
 		this.populationProcessor = populationProcessor;
 		this.violationProcessor = violationProcessor;
 		this.propertyProcessor = propertyProcessor;
