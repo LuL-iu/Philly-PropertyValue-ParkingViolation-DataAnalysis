@@ -6,7 +6,7 @@ UPENN MCIT
 Dear TA:
 
 ```diff
-- please note that our program on initialization, takes about 2 - 3 minutes to load. 
+- please note that our program on initialization, might takes about 1 minute to load. 
 - Then it works fast. During that time, it is reading the files, including the large properties csv file.
 ```
 
