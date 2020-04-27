@@ -43,7 +43,7 @@ public class PropertyProcessor implements Processor {
 	 }
 	 
 	 //calculate the average value based on the zip code input and data type
-	 public int Average(String type, String zipCode) {
+	 public int Average(GetPropertyValue getPV,  String zipCode) {
 		Double total = 0.0;
 		int average;
 		List<PropertyValues> l = new ArrayList<PropertyValues>();
@@ -52,7 +52,7 @@ public class PropertyProcessor implements Processor {
 			if(s.equals(zipCode)) {
 				l = propertyMap.get(s);
 				for(PropertyValues p : l) {
-					total += getNumber(p, type);
+					total += getPV.getValue(p);
 				}
 			}
 		}
@@ -68,16 +68,16 @@ public class PropertyProcessor implements Processor {
 	 
 	 //apply average method with input data type, return market value data 
 	 public int averageResidentialMarketValue(String zipCode) {
-		 return  Average("value", zipCode);
+		 return  Average(new GetPropertyMarketValue(), zipCode);
 	 }
 	 
 	//apply average method with input data type, return livable area data
 	 public int averageResidentialTotalLivableArea(String zipCode) {
-		 return  Average("area", zipCode);
+		 return  Average(new GetPropertyLivableArea(), zipCode);
 	 }
 	 
 	 // calculate the total residential value per capita, taking the input of zip code, population map data, and the data type should returned
-	 public int totalResidentialPerCaptia(String zipCode, Map<String, Integer> populationMap, String type) {
+	 public int totalResidentialPerCaptia(String zipCode, Map<String, Integer> populationMap, GetPropertyValue getPV) {
 		 int average;
 		 Double total = 0.0;
 		 int population = 0;
@@ -86,7 +86,7 @@ public class PropertyProcessor implements Processor {
 			if(s.equals(zipCode)) {
 				l = propertyMap.get(s);
 				for(PropertyValues p : l) {
-					total += getNumber(p, type);
+					total += getPV.getValue(p);
 				}
 			}
 		 }
@@ -104,11 +104,11 @@ public class PropertyProcessor implements Processor {
 	 
 	 //apply totalResidentialPerCaptia method with data type
 	 public int totalResidentialMarketValuePerCapita(String zipCode, Map<String, Integer> populationMap){
-		 return totalResidentialPerCaptia(zipCode, populationMap, "value");
+		 return totalResidentialPerCaptia(zipCode, populationMap, new GetPropertyMarketValue());
 	 }	
     
 	 //apply totalResidentialPerCaptia method with data type
 	 public int totalResidentialLivableAreaPerCapita(String zipCode, Map<String, Integer> populationMap){
-		 return totalResidentialPerCaptia(zipCode, populationMap, "area");
+		 return totalResidentialPerCaptia(zipCode, populationMap, new GetPropertyLivableArea());
 	 }	
 }
