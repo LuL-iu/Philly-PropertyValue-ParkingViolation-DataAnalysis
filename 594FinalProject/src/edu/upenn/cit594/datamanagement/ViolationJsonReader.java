@@ -29,7 +29,8 @@ public class ViolationJsonReader implements ViolationReader {
 	public ViolationJsonReader(String name) {
 		fileName = name;
 	}
-
+    
+	@Override
 	// gets all data from file
 	@SuppressWarnings("rawtypes")
 	public HashMap<String, Double> getViolationMap() {

@@ -20,7 +20,8 @@ public class ViolationCSVReader implements Reader, ViolationReader {
 	public ViolationCSVReader(String name) {
 		fileName = name;
 	}
-
+    
+	@Override
 	// get data from CSV file
 	public HashMap<String, Double> getViolationMap() {
 		// log filename
