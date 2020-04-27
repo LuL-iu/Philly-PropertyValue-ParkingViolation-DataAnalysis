@@ -1,16 +1,23 @@
 package edu.upenn.cit594.ui;
 
 import java.text.DecimalFormat;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.TreeMap;
 
+import edu.upenn.cit594.processor.AverageMarketValStrategyPattern;
+import edu.upenn.cit594.processor.AverageResidentiatTotalLivableAreaStrategyPattern;
+import edu.upenn.cit594.processor.Context;
+
 import edu.upenn.cit594.datamanagement.ErrorChecker;
 import edu.upenn.cit594.logging.Logger;
 import edu.upenn.cit594.processor.PopulationProcessor;
-import edu.upenn.cit594.processor.PropertyProcessor;
+import edu.upenn.cit594.processor.Strategy;
+import edu.upenn.cit594.processor.TotalResidentialMarketValuePerCapitaStrategyPattern;
+import edu.upenn.cit594.processor.LivableAreaPerCapitaStrategyPattern;
 import edu.upenn.cit594.processor.ViolationProcessor;
 
 /**
@@ -23,7 +30,8 @@ import edu.upenn.cit594.processor.ViolationProcessor;
 public class UserInterface {
 	protected PopulationProcessor populationProcessor;
 	protected ViolationProcessor violationProcessor;
-	protected PropertyProcessor propertyProcessor;
+	// protected PropertyProcessor propertyProcessor;
+	protected Context propertyProcessor;
 	protected Scanner in;
 	protected ErrorChecker EChecker = new ErrorChecker();
 	protected Map<String, Integer> populationMap;
@@ -37,7 +45,7 @@ public class UserInterface {
 	ArrayList<Integer> additionalFeatureResult = new ArrayList<Integer>();
 
 	public UserInterface(PopulationProcessor populationProcessor, ViolationProcessor violationProcessor,
-			PropertyProcessor propertyProcessor) {
+			Context propertyProcessor) {
 		this.populationProcessor = populationProcessor;
 		this.violationProcessor = violationProcessor;
 		this.propertyProcessor = propertyProcessor;
@@ -46,8 +54,7 @@ public class UserInterface {
 
 	public void start() {
 		// display options to screen;
-		System.out.println("Enter 0 to Exit\n"
-				+ "Enter 1 to show total population for all ZIP codes\n"
+		System.out.println("Enter 0 to Exit\nEnter 1 to show total population for all ZIP codes\n"
 				+ "Enter 2 to show total parking fines per capita for each ZIP codes\n"
 				+ "Enter 3 to show average market value for residents in specified ZIP code\n"
 				+ "Enter 4 to show average total livable area for residents in specified ZIP code\n"
@@ -57,7 +64,7 @@ public class UserInterface {
 		// set up data map in processor(start to read data from the 3 files)
 		populationProcessor.buildMap();
 		violationProcessor.buildMap();
-		propertyProcessor.buildMap();
+		// propertyProcessor.buildMap();
 		populationMap = populationProcessor.getPopulationMap();
 
 		// run different methods based on user input
@@ -88,7 +95,6 @@ public class UserInterface {
 			else if (choice.equals("5")) {
 				displayTotalResidentialMarketValuePerCapita();
 			}
-			
 
 			else if (choice.equals("6")) {
 				displayTotalResidentialLivableAreaPerCapitaInHighestFineLocation();
@@ -143,7 +149,7 @@ public class UserInterface {
 		displayAverage("MarketValuePerCapita");
 	}
 
-	// common methods shared by 3 methods
+	// common methods shared by 3 methods, strategy pattern
 	private void displayAverage(String type) {
 		Logger logger = Logger.getInstance();
 		System.out.println("Enter a ZIP code");
@@ -153,25 +159,34 @@ public class UserInterface {
 		// if the input is the right format zip code, processing the data and display
 		// the results
 		if (EChecker.is5DigitZip(zipcode)) {
-			if (type.equals("LivableArea")) {
+			// IF RESULTS FOR EITHER ARE EMPTY THEN READ CSV FILE PROPERTIES AND SET UP MAP
+			if (totalLivableAreaResults.isEmpty() && MarketValuePerCapitaResults.isEmpty()
+					&& marketValueResults.isEmpty()) {
+				propertyProcessor.buildMap(); // build map only when user selects a zipcode choice
+			}
+			if (type.equals("LivableArea")) { // per capita livable area
 				if (!totalLivableAreaResults.containsKey(zipcode)) {
-					average = propertyProcessor.averageResidentialTotalLivableArea(zipcode);
+					// average = propertyProcessor.averageResidentialTotalLivableArea(zipcode);
+					average = propertyProcessor.chooseStrategy(populationMap, zipcode,
+							new AverageResidentiatTotalLivableAreaStrategyPattern());
 					totalLivableAreaResults.put(zipcode, average); // memoization
 				} else {
 					average = totalLivableAreaResults.get(zipcode);
 				}
 			}
-			if (type.equals("MarketValuePerCapita")) {
+			if (type.equals("MarketValuePerCapita")) { // market value per capita
 				if (!MarketValuePerCapitaResults.containsKey(zipcode)) {
-					average = propertyProcessor.totalResidentialMarketValuePerCapita(zipcode, populationMap);
+					average = propertyProcessor.chooseStrategy(populationMap, zipcode,
+							new TotalResidentialMarketValuePerCapitaStrategyPattern());
 					MarketValuePerCapitaResults.put(zipcode, average); // memoization
 				} else {
 					average = MarketValuePerCapitaResults.get(zipcode);
 				}
 			}
-			if (type.equals("MarketValue")) {
+			if (type.equals("MarketValue")) { // avg market value
 				if (!marketValueResults.containsKey(zipcode)) {
-					average = propertyProcessor.averageResidentialMarketValue(zipcode);
+					average = propertyProcessor.chooseStrategy(populationMap, zipcode,
+							new AverageMarketValStrategyPattern());
 					marketValueResults.put(zipcode, average); // memoization
 				} else {
 					average = marketValueResults.get(zipcode);
@@ -185,9 +200,15 @@ public class UserInterface {
 	// display the total residential livable area per capita in the zipcode location
 	// with highest total parking fine
 	private void displayTotalResidentialLivableAreaPerCapitaInHighestFineLocation() {
+		if (totalLivableAreaResults.isEmpty() && MarketValuePerCapitaResults.isEmpty()
+				&& marketValueResults.isEmpty()) {
+			propertyProcessor.buildMap(); // build map only when user selects a zipcode choice
+		}
+
 		if (additionalFeatureResult.isEmpty()) {
 			String highestFineZipcode = violationProcessor.getHighestFineLocation();
-			int average = propertyProcessor.totalResidentialLivableAreaPerCapita(highestFineZipcode, populationMap);
+			int average = propertyProcessor.chooseStrategy(populationMap, highestFineZipcode,
+					new LivableAreaPerCapitaStrategyPattern());
 			System.out.println("ZIP code with the highest total parking fine is " + highestFineZipcode
 					+ "\nThe total residential livable area per Capita in this location is " + average);
 			additionalFeatureResult.add(Integer.parseInt(highestFineZipcode));
