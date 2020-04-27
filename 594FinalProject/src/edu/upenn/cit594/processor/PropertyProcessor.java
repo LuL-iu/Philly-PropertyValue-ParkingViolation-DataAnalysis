@@ -32,17 +32,7 @@ public class PropertyProcessor implements Processor {
 		 
 	 }
 	 
-	 //return the property value based on the type input, if type is "area" return livable area, else return market value
-	 public Double getNumber(PropertyValues p, String type) {
-		 if(type == "area") {
-			 return p.getTotalLivableArea();
-		 }
-		 else {
-			 return p.getMaketValue();
-		 }
-	 }
-	 
-	 //calculate the average value based on the zip code input and data type
+	 //calculate the average value based on the zip code input and strategy pattern
 	 public int Average(GetPropertyValue getPV,  String zipCode) {
 		Double total = 0.0;
 		int average;
@@ -66,12 +56,12 @@ public class PropertyProcessor implements Processor {
 		return average;	
 	 }
 	 
-	 //apply average method with input data type, return market value data 
+	 //apply average method with strategy pattern, return market value data 
 	 public int averageResidentialMarketValue(String zipCode) {
 		 return  Average(new GetPropertyMarketValue(), zipCode);
 	 }
 	 
-	//apply average method with input data type, return livable area data
+	//apply average method with strategy pattern, return livable area data
 	 public int averageResidentialTotalLivableArea(String zipCode) {
 		 return  Average(new GetPropertyLivableArea(), zipCode);
 	 }
