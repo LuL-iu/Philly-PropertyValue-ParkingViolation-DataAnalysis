@@ -27,7 +27,9 @@ ballpark of all zip codes per capita living area. The algorithm goes:
 
 Three Data Structures:
 
-HashMap: We used a hashmap in multiple places within the reader
+HashMap: 
+
+We used a hashmap in multiple places within the reader
 classes. We used a map, because we wanted to have a key, which was the
 zipcode, which was the key to a value. For example, for the property
 reader, we stored the zipcode as key, and the PropertyValue object as
