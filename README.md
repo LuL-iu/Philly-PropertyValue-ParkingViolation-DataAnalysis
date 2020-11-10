@@ -23,6 +23,7 @@ ballpark of all zip codes per capita living area. The algorithm goes:
 ● Divide that by population.
 ● Add all the livable areas of each space and
 ● Divide that by the total population of that zipcode.
+
 Three Data Structures:
 HashMap: We used a hashmap in multiple places within the reader
 classes. We used a map, because we wanted to have a key, which was the
@@ -44,6 +45,7 @@ Additionally we used HashMaps for memoization, because it was easy to
 take a user input as key and use the value as the answer to return. A
 HashMap is O(1) for the contains() and get() method, making it quite
 efficient.
+
 TreeMap: We used a treemap to store the parking violations per capita
 data. Since we were asked to store these based on ascending numerical
 order of zip codes. Since a TreeMap automatically sorts data, it was
@@ -66,6 +68,7 @@ the full size. We also considered a HashSet, but we realize that many
 properties have the same total livable area and market value, and
 HashSets don't allow duplicate values. Thus ArrayList was the best
 option for us.
+
 Array: We used arrays in multiple areas, especially in readers to
 quickly split strings read from files by commas, spaces and quotations
 (using the String.split() method). Arrays offered us a quick and
