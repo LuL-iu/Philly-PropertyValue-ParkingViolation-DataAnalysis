@@ -4,6 +4,7 @@ by Lu Liu and Kai Kleinbard
 UPENN MCIT
 
 The Additional Feature:
+
 We are finding the zipcode with the highest total parking fines (once
 we've added all the fines within the neighborhood. Then we use this
 data and find the same zip codes' total livable area per capita. We
@@ -25,6 +26,7 @@ ballpark of all zip codes per capita living area. The algorithm goes:
 ● Divide that by the total population of that zipcode.
 
 Three Data Structures:
+
 HashMap: We used a hashmap in multiple places within the reader
 classes. We used a map, because we wanted to have a key, which was the
 zipcode, which was the key to a value. For example, for the property
@@ -47,6 +49,7 @@ HashMap is O(1) for the contains() and get() method, making it quite
 efficient.
 
 TreeMap:
+
 We used a treemap to store the parking violations per capita
 data. Since we were asked to store these based on ascending numerical
 order of zip codes. Since a TreeMap automatically sorts data, it was
@@ -71,6 +74,7 @@ HashSets don't allow duplicate values. Thus ArrayList was the best
 option for us.
 
 Array: 
+
 We used arrays in multiple areas, especially in readers to
 quickly split strings read from files by commas, spaces and quotations
 (using the String.split() method). Arrays offered us a quick and
